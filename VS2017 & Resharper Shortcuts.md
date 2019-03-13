@@ -247,10 +247,15 @@ In this case both **the index and the working area** are reset to the set of the
 | `git rm myfile.txt --cached` | The --cached option allows the myfile.txt to be removed only from the index biut not from the working area. This is the **UNSTAGE** of the file.|
 | `git rm file.txt` | Remove file.txt from the staging area. It kicks the file off the stage entirely it effectly deletes them. |
 | `git rm --cached file.txt` | Removes the file.txt from the stage. That is, when you commit the file will be removed.|
-| `git reset HEAD -- file.txt` | Reset file.txt in the staging area to the state where it was on the HEAD commit i.e. it undoes any changes you did to it since last commiting. If that change happens to be newly adding the file, then they will be equivalent.|
+| `git reset HEAD -- file.txt` | Reset file.txt in the staging area (Index) to the state where it was on the HEAD commit i.e. it undoes any changes you did to it since last commiting. If that change happens to be newly adding the file, then they will be equivalent. This is achieved by copying the file from the repo to the Index.|
+| `git reset HEAD` | The same as above but it applies to all files in the staging area tha tis the Index.This is achieved by copying the all repo to the Index.|
 | `git reset --hard fbe5356` | Resets the branch and HEAD to the given commit and restores the sate of working area and Index to the state they had at that commit.|
+| `git checkout HEAD file.txt` | This is a special case and it sa the effect of checking out from the repo the file.txt back into the Index and the Working Area. This is convenient when you want to just reset a single file in both areas and not the whole Index.|
 | `git stash --include-untracked` | The `--include-untracked` will also push to the stash all the staged changes and all files that are in the working area but are not traked. The stash command is automatically followed by a **checkout** command on the current branch which reset the state of the index and working area to that of the branch.|
 | `git merge tomato` | Invokes a merge operation of the **tomato branch into the current branch**.|
+| `git log` | Shows the history of the checked out branch. However, this is not very useful by itself as it just outputs a list.|
+| `git log --graph` | This is much more useful as it outputs a history graph.|
+| `` | .|
 | `` | .|
 | `` | .|
 | `` | .|
