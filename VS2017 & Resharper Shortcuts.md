@@ -84,6 +84,12 @@
 
 ---
 
+### Resharper Continuos TUnit Testing with dotCover
+
+[dotCover 2018.1: Better continuous testing and more!](https://blog.jetbrains.com/dotnet/2018/03/21/dotcover-2018-1-better-continuous-testing/)
+
+---
+
 ## Git FAQs
 
 - [How do I exit the results of 'git diff' in Git Bash on windows?](https://stackoverflow.com/questions/9929457/how-do-i-exit-the-results-of-git-diff-in-git-bash-on-windows)
@@ -255,8 +261,8 @@ In this case both **the index and the working area** are reset to the set of the
 | `git merge tomato` | Invokes a merge operation of the **tomato branch into the current branch**.|
 | `git log` | Shows the history of the checked out branch. However, this is not very useful by itself as it just outputs a list.|
 | `git log --graph` | This is much more useful as it outputs a history graph.|
-| `` | .|
-| `` | .|
+| `git log --graph --decorate --oneline` | The `--decorate` option shows the position of references such as branches. The `--oneline` formats the log so that each commit tales a single line.|
+| `git show abcd1234` | Shows all the details relative to the give commit hash `abcd1234` i.e. lines added and lines removed or modified per each file or files added and removed, etc.|
 | `` | .|
 | `` | .|
 | `` | .|
@@ -269,8 +275,8 @@ In this case both **the index and the working area** are reset to the set of the
 | ------------ | ------------------- |
 | `Q` | To break ouf from the `git diff...`.|
 | `clear` | To clear the output.|
-| `` | .|
-| `` | .|
+| `history -c` | To clear the whole command history.|
+| `reset` | This is what you normally want! It clears the screen for good but preserve the command history.|
 | `` | .|
 
 ---
