@@ -263,6 +263,10 @@ In this case both **the index and the working area** are reset to the set of the
 | `git log --graph` | This is much more useful as it outputs a history graph.|
 | `git log --graph --decorate --oneline` | The `--decorate` option shows the position of references such as branches. The `--oneline` formats the log so that each commit tales a single line.|
 | `git show abcd1234` | Shows all the details relative to the give commit hash `abcd1234` i.e. lines added and lines removed or modified per each file or files added and removed, etc.|
+| `git show somebranch` | As above but the name of teh branch is used instead of that of the corresponding commit.|
+| `git show HEAD` | The sama as above but the reference HEAD is used. This time the details about the branch commit pointed to by HEAD are shown.|
+| `git show HEAD^` | The caret `^` means the parent commit. In this case the details about the parent commit of the commit pointed to by HEAD is displayed|
+| `` | .|
 | `` | .|
 | `` | .|
 | `` | .|
