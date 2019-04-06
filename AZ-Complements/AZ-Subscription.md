@@ -2,7 +2,13 @@
 
 ## Main Resources
 
-1. [Managing Microsoft Azure Subscriptions by Dan Lachance](https://app.pluralsight.com/library/courses/microsoft-azure-subscriptions-managing/table-of-contents)   
+1. [Managing Microsoft Azure Subscriptions by Dan Lachance](https://app.pluralsight.com/library/courses/microsoft-azure-subscriptions-managing/table-of-contents)  
+
+2. [Mastering Microsoft Azure Resource Manager by James Bannan](https://app.pluralsight.com/library/courses/microsoft-azure-resource-manager-mastering/table-of-contents) 
+
+## Realted Resources
+
+
 
 ## Complementary Resources
 
