@@ -49,15 +49,54 @@
 
 - Tags are **key-value pairs** that can be added to resources including resource groups.
 - Tags can be used to logically and systemmatically organize resources and easily search and find them.
-- Tags **can be applied to Resource Gruops**.
+- Tags **can be applied to Resource Groups**.
 - Tags are **metadata that is not inherited** thus the resources that are in a tagged resource goroup do not have their RG's tags.
 - There is alimit of 15 tags that can be applied to any resource. 
+- Tags can be added at creation time or after creation with Powershel/Azure CLI while with the Azure Portal only after creation of te resource.
 
 ---
 
 ## Demos
 
 - [Tag Resources in the Azure Portal](https://app.pluralsight.com/player?course=microsoft-azure-subscriptions-managing&author=daniel-lachance&name=2bd06ed4-f0c8-4b8d-89d9-1896675d4e57&clip=2&mode=live)  
+
+- [Tag Resources with Powershell](https://app.pluralsight.com/player?course=microsoft-azure-subscriptions-managing&author=daniel-lachance&name=2bd06ed4-f0c8-4b8d-89d9-1896675d4e57&clip=3&mode=live)
+
+```
+# get all the tags defined in the subscription
+Get-AzureRmTag
+```
+
+```
+# use the set of Resource Manager (RM) cmdlets 
+# read all the tags for a resource
+(Get-AzureRmResource -ResourceName "MyUbuntuVM1" -ResourceGroupName "RG1").Tags
+```
+
+```
+# use variables
+# use the set of Resource Manager (RM) cmdlets 
+# read all the tags for a resource
+$r = Get-AzureRmResource -ResourceName "MyUbuntuVM1" -ResourceGroupName "RG1"
+$tags = $r.Tags
+
+# must add to tags otherwise the property value is replaced!
+$tags += @{Dept="IT"; Phase="Testing"}
+Set-AzureRmResource -ResourceId $r.Id -Tags $tags -Force
+```
+
+```
+# remove all tags on a resource
+Set-AzureRmResource $r.Id -Tag @{} -Force
+```
+
+```
+# gets all the resources in the subsciption with a specific tag
+Get-AzureRmResource -TagName Dept
+
+# get the names of all reosurces that have the tag defined as the -Tag option
+(Get-AzureRmResource -Tag @{Dept="IT"}).Name
+```
 
 ---
 
