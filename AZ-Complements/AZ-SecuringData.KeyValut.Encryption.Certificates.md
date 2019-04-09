@@ -49,5 +49,22 @@ This is a strong liability as it would be possible for anyone with access to the
 - What **Microsoft Secret Identity (MSI)** and how to use it
 - How to use the **Microsoft Visusal Studio Extension for the management of Identities** which allows developers to authenticate to **Azure AD** and obtain **access tokens** to test **MSI0related code** locally before deplying to AppService
 
+### Microsoft Azure KeyVault
+
+Use **Microsoft Azure KeyVault** to protect **secrets** such as
+
+- Any storage **connection strings** i.e. for (Azure) SQL Server Database, Azure Storage, Azure Cache, etc.
+- Any **Encryption Keys** used by your applications i.e. for **Azure SQL Always-Encrypted feature**, **Azure Storage Data Encryption at rest**, etc.
+- Any kind of **Cryptographic Keys** in general
+- Any kind of **secrets**
+- Any **certificates both public and privat keys such as for x509 certificates used in HTTPS/SSL communication**
+
+---
+
+### [How to Enable Azure SQL Server Database Transparent Data Encryption](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=1&mode=live)  
+
+With **Transparent Data Encryption** the encryption of the data is performed by using **Microsoft Managed Encryption Keys**.
+This feasutes is avalable from the **Transparent Data Encryption** menu item of the **SQL Databases pane**. However, it is also **possible to create your own encryption keys which should then be stored in KeyVault**. This features encrypts the **databases, the backups and logs**.
+
 ---
 
