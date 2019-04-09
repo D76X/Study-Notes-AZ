@@ -97,5 +97,12 @@ This feature is necessary as it is desirable to make sure that encryption keys d
 
 ### [Harware Security Modules (HSM)](https://azure.microsoft.com/en-us/services/azure-dedicated-hsm/)  
 
+**Harware Security Modules (HSM)** are an option...
+
+More Information on **HSM** can be found at the resources below.
+
+- [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas) 
+
+
 ---
 
