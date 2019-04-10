@@ -10,7 +10,8 @@
 
 ## Complementary Resources
 
-- [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas) 
+- [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas)  
+- [Understanding Hardware Security Modules (HSMs)](https://www.cryptomathic.com/news-events/blog/understanding-hardware-security-modules-hsms)  
 
 ---
 
@@ -97,10 +98,34 @@ This feature is necessary as it is desirable to make sure that encryption keys d
 
 ### [Harware Security Modules (HSM)](https://azure.microsoft.com/en-us/services/azure-dedicated-hsm/)  
 
-**Harware Security Modules (HSM)** are an option...
+#### [What are HSMs?]
+
+**Harware Security Modules (HSM)** are physical computing devices that **safeguards and manages digital keys** for strong authentication and provides **cryptoprocessing**. These modules traditionally come in the form of a plug-in card or an external device that attaches directly to a computer or network server. HSM is a special trusted network computer performing a variety of cryptographic operations: key management, key exchange, encryption etc. **Cryptographic operations must be performed in a trusted environment** that is no viruses, no malware, no exploit, no unauthorized access.
+
+#### Summary of the features of HSM
+
+1. Is built on top of specialized hardware. 
+2. The hardware is well-tested and certified in special laboratories.
+3. Has a security-focused OS.
+4. Has limited access via a network interface that is strictly controlled by internal rules.
+5. Actively hides and protects cryptographic material.
+6. Can generate well-randomized keys
+
+#### Separation of Concers
+
+An ordinary, run-of-the-mill program writer mixes the database access code, business-logic and cryptographic calls in one big application. This is a dangerous approach as an attacker can use crafted data and vulnerabilities to access cryptographic material, steal keys, install an arbitrary X.509 certificate and so on.
+To prevent scenarios like this, we need to separate the operations into two different areas. 
+
+- Business logic 
+- Cryptography. 
+
+#### Generation of  well-randomized Cryptographic Keys (Weak Key vs Strong Key)
+
+A cryptographic key must be truly random. A computer by design, is unable to generate a really random value because it is a finite-state machine. Therefore, we need a special physical process to generate random numbers and keys. An HSM has special hardware that uses a physical process to create a good source of randomness (entropy) that in turn is used to generate good quality and “perfectly” random keys.
 
 More Information on **HSM** can be found at the resources below.
 
+- [Understanding Hardware Security Modules (HSMs)](https://www.cryptomathic.com/news-events/blog/understanding-hardware-security-modules-hsms)  
 - [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas) 
 
 
