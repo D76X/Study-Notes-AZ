@@ -96,9 +96,16 @@ This feature is necessary as it is desirable to make sure that encryption keys d
 
 ---
 
-### [Harware Security Modules (HSM)](https://azure.microsoft.com/en-us/services/azure-dedicated-hsm/)  
+## [Harware Security Modules (HSM)](https://azure.microsoft.com/en-us/services/azure-dedicated-hsm/)  
 
-#### [What are HSMs?]
+ ---
+### Complementary Resources on HSM Harware Security Modules (HSM)
+
+- [Understanding Hardware Security Modules (HSMs)](https://www.cryptomathic.com/news-events/blog/understanding-hardware-security-modules-hsms)  
+- [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas) 
+
+---
+#### [What are HSMs?](https://www.cryptomathic.com/news-events/blog/understanding-hardware-security-modules-hsms)  
 
 **Harware Security Modules (HSM)** are physical computing devices that **safeguards and manages digital keys** for strong authentication and provides **cryptoprocessing**. These modules traditionally come in the form of a plug-in card or an external device that attaches directly to a computer or network server. HSM is a special trusted network computer performing a variety of cryptographic operations: key management, key exchange, encryption etc. **Cryptographic operations must be performed in a trusted environment** that is no viruses, no malware, no exploit, no unauthorized access.
 
@@ -123,11 +130,13 @@ To prevent scenarios like this, we need to separate the operations into two diff
 
 A cryptographic key must be truly random. A computer by design, is unable to generate a really random value because it is a finite-state machine. Therefore, we need a special physical process to generate random numbers and keys. An HSM has special hardware that uses a physical process to create a good source of randomness (entropy) that in turn is used to generate good quality and “perfectly” random keys.
 
-More Information on **HSM** can be found at the resources below.
+#### Designed for Performance
 
-- [Understanding Hardware Security Modules (HSMs)](https://www.cryptomathic.com/news-events/blog/understanding-hardware-security-modules-hsms)  
-- [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas) 
+HSMs have **outstanding and incomparable performance**. The maximum you can get in any server is n * 1000 digital signatures per second, but an HSM can achieve millions.
 
+#### HSMs and Key Management
 
+HSMs are built to protect cryptographic keys.
+ 
 ---
 
