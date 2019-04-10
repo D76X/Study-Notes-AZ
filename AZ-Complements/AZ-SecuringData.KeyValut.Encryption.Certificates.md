@@ -165,9 +165,12 @@ The following Powershell script which must be run in `admin` mode is pretty self
  Connect-AzureRmAccount
  New-AzureRmKeyVault - VaultName 'MyApplicationVault' - ResourceGroup 'MyResourceGroup' -Location 'North Europe'
  # convert the item to store as a secret in teh Vault to a secure string
- $secureString = ConvertTo-SecureString -String "connection_string"
+ $secureString = ConvertTo-SecureString -String "connection_string" -AsPlainText -Force
  # add the item to the vault and get the secret in return to use in your app
- $secret = SetAzureKeyVaultSecret -VaultName 'MyApplicationVault' - Name 'ConnectionString1' -SecretValue  $secureString  $secureString.Id
+ $secret = SetAzureKeyVaultSecret -VaultName 'MyApplicationVault' - Name 'ConnectionString1' -SecretValue  $secureString  
+ # print the ID of the secret as a feedback to make sure that it has been actually created in Key Vault
+ # the id of the secret is also to be used in the apps that needs to retrieve the secret from the Vault 
+ $secureString.Id
  ```
 
 ---
