@@ -91,9 +91,13 @@ On returning to **Microsoft Azure Key Vault** it **authenticates** against the p
 - **Key Rotation & Versioning**
 - **Integration with other Azure services**
 
-#### Key Rotation & Versioning
+#### [Key Rotation & Versioning](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=3&mode=live)  
 
-This feature is necessary as it is desirable to make sure that encryption keys do not remain the same and are changed overtime. However, an audit of the version is kept so that if data  is encrypted with a key that is then rotated it is still possible to decrypt it later on.
+This feature is necessary as it is desirable to make sure that encryption keys do not remain the same and are changed overtime. However, an audit of the version is kept so that if data  is encrypted with a key that is then rotated it is still possible to decrypt it later on. Whenever a secret is created in a Vault **the ID of the secret is a URL whose last fragment identifies the version**. For example in the example below the `https://myapplicationvault.vault.azure.net/secrets/thenameofthesecret/` indentifies the secret as a resource in Azure Key Vault while `8e3e459w3747wq85387eqw98e728e937949` is its version at the time of the creation. The `https://myapplicationvault.vault.azure.net/secrets/thenameofthesecret/` fragment always gives access to the latest versions but other versions are available as well as long as the corresponding version fragment is known.
+
+```
+https://myapplicationvault.vault.azure.net/secrets/thenameofthesecret/8e3e459w3747wq85387eqw98e728e937949
+```
 
 ---
 
