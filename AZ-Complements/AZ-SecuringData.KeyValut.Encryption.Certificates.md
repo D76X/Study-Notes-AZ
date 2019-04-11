@@ -205,7 +205,16 @@ Set-AzureRmKeyVaultAcessPolicy -VaultName MyApplicationVault' -ServicePrincipalN
 
 For the **AppService** to be able to talk to a **KeyVault on a Azure subscription** the **Nuget Pakage** below must be installed to it.
 
-`Microsoft.IdentityModel.Clients.ActiveDirectory`
+`Microsoft.IdentityModel.Clients.ActiveDirectory`  
+`Microsoft.Azure.KeyVault`
+
+Then the **web.config** must be edited so that the **connection strings and other sensitive information is replaced with the ID of the secret that corresponds to it in the Azure KeyVault**. In the **web.config** is it also possible to leave in the two pieces of information that the **AppService code** will need in order to gain access to the Key Vault that is
+
+1. ClientId
+2. ClientSecret
+3. The URI of the keys that the AppService needs to access the values of from the KeyVault
+
+It is important to understand that **it is now safe to leave these two pieces of information in the web.config** because they can only be used to access the KeyVault from the **Azure AppService** that has been **registered with Azure AD for a particular registered domain that is URL**. In the unfortunate case the any of all of the items **ClientID, ClientSecret or KeyVault Keys** were leaked these could not be used from any other domain but the registered domain for this specific **ServiceApp** to which any third-party should not have access unless they are the account managers. Moreover, the **ClientSecret can be revoked and a new one can be genereated** in case it was compromized.
 
 ---
 
