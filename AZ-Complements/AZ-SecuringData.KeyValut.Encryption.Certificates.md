@@ -195,11 +195,17 @@ The following Powershell script which must be run in `admin` mode is pretty self
   
 #### Powershell Script to register the AppService with Azure KeyVault
 
-Notice that `-PermissionToSecrets Get` specifies that the **Application ID** set with `-ServicePrincipalName` is granted the **permission** to read the value of the keys from the vault of name `MyApplicationVault`.
+Notice that `-PermissionToSecrets Get` specifies that the **Application ID** set with `-ServicePrincipalName` is granted the **permission** to read the value of the keys from the vault of name `MyApplicationVault`. Clearly, other permissiones other than `Get (read)` can be set such as `Post (update)`.
 
 ```
 Set-AzureRmKeyVaultAcessPolicy -VaultName MyApplicationVault' -ServicePrincipalName "...app ID secret..." -PermissionToSecrets Get
 ``` 
+
+ #### [Read the key values from KeyVault](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=3&mode=live)  
+
+For the **AppService** to be able to talk to a **KeyVault on a Azure subscription** the **Nuget Pakage** below must be installed to it.
+
+`Microsoft.IdentityModel.Clients.ActiveDirectory`
 
 ---
 
