@@ -163,7 +163,7 @@ HSMs are built to protect cryptographic keys.
  - **Add the logic in the AppService that reads the configuration string from the Key Vault using the Client ID  and the KeyVault secret**
  - Deploy the AppService
 
-#### Create a new Vault in Azure Key Vault
+#### Create a new Vault in Azure Key Vault & Store a connection string to the Vault as a secret
 
 The following Powershell script which must be run in `admin` mode is pretty self-explanatory. Notice that when when the ` Connect-AzureRmAccount` is run then the user might be promt to log in their Azure Microsoft Account in order to authorize the Powershell session. This cmdlet as it is sets the session to use the `default subscription`. In cases in which multiple subscriptions for the same account exist and you do not want to use the default subscription add the subscription swith to the statement that creates the Powershell session or to the other statement that create the assets.
 
@@ -179,7 +179,7 @@ The following Powershell script which must be run in `admin` mode is pretty self
  $secureString.Id
  ```
 
- #### Store a connection string to the Vault as a secret
+ #### egister an AppService with **Azure AD** to obtain a **Client ID secret**
 
 ---
 
