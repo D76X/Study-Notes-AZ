@@ -163,7 +163,7 @@ HSMs are built to protect cryptographic keys.
  - **Add the logic in the AppService that reads the configuration string from the Key Vault using the Client ID  and the KeyVault secret**
  - Deploy the AppService
 
-#### Create a new Vault in Azure Key Vault & Store a connection string to the Vault as a secret
+#### [Create a new Vault in Azure Key Vault & Store a connection string to the Vault as a secret](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=3&mode=live)  
 
 The following Powershell script which must be run in `admin` mode is pretty self-explanatory. Notice that when when the ` Connect-AzureRmAccount` is run then the user might be promt to log in their Azure Microsoft Account in order to authorize the Powershell session. This cmdlet as it is sets the session to use the `default subscription`. In cases in which multiple subscriptions for the same account exist and you do not want to use the default subscription add the subscription swith to the statement that creates the Powershell session or to the other statement that create the assets.
 
@@ -179,7 +179,27 @@ The following Powershell script which must be run in `admin` mode is pretty self
  $secureString.Id
  ```
 
- #### egister an AppService with **Azure AD** to obtain a **Client ID secret**
+ #### [Register an AppService with **Azure AD** to obtain a **Client ID secret**](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=3&mode=live)  
+
+ By registering an AppService with **Azure AD** a **Application ID (aka Client ID) and a secret** are generated that will be used for
+
+ - Authenticate to Azure AD
+ - Authenticate to Azure Key Vault
+
+ #### Steps to register the AppService with Azure AD
+
+ 1. Search **App Registration** in the Azure Portal
+ 2. Select a new application registration (Name, Type, Sign-on URL)
+ 3. The **Application ID** is easily found 
+ 4. The **secret** for this **Application ID** can be created is in the **Settings >> Keys** and you can choose an **Expiration** and a **cryptographic Value** is generated on saving
+  
+#### Powershell Script to register the AppService with Azure KeyVault
+
+Notice that `-PermissionToSecrets Get` specifies that the **Application ID** set with `-ServicePrincipalName` is granted the **permission** to read the value of the keys from the vault of name `MyApplicationVault`.
+
+```
+Set-AzureRmKeyVaultAcessPolicy -VaultName MyApplicationVault' -ServicePrincipalName "...app ID secret..." -PermissionToSecrets Get
+``` 
 
 ---
 
