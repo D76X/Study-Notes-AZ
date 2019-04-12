@@ -3,14 +3,16 @@
 ## Main Resources
 
 1. [Microsoft Azure Developer: Securing Data by by Reza Salehi](https://app.pluralsight.com/library/courses/microsoft-azure-data-securing/table-of-contents)
-2. [Securing Virtual Machines with Azure Key Vault by Gary Grudzinskas](https://app.pluralsight.com/library/courses/securing-virtual-machines-azure-key-vault/table-of-contents)  
-
+2. [Securing Virtual Machines with Azure Key Vault by Gary Grudzinskas](https://app.pluralsight.com/library/courses/securing-virtual-machines-azure-key-vault/table-of-contents) 
 
 ## Realted Resources
 
+- [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas)  
+
+- [Managing User Secrets](https://www.youtube.com/watch?v=KDgNJKZ0oiA)  
+
 ## Complementary Resources
 
-- [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas)  
 - [Understanding Hardware Security Modules (HSMs)](https://www.cryptomathic.com/news-events/blog/understanding-hardware-security-modules-hsms)  
 
 ---
@@ -170,7 +172,7 @@ The following Powershell script which must be run in `admin` mode is pretty self
  ```
  Connect-AzureRmAccount
  New-AzureRmKeyVault - VaultName 'MyApplicationVault' - ResourceGroup 'MyResourceGroup' -Location 'North Europe'
- # convert the item to store as a secret in teh Vault to a secure string
+ # convert the item to store as a secret in the Vault to a secure string
  $secureString = ConvertTo-SecureString -String "connection_string" -AsPlainText -Force
  # add the item to the vault and get the secret in return to use in your app
  $secret = SetAzureKeyVaultSecret -VaultName 'MyApplicationVault' - Name 'ConnectionString1' -SecretValue  $secureString  
@@ -224,6 +226,28 @@ var kv = new KeyVaultClient(KeyVaultClient.AuthenticationCallback(KeyVaultServic
 var secret = kv.GetSecretAsync(WebConfigiration.AppSettings["ConnectionString"]).Result;
 KeyVaultService.ConnectionString = secret.Value;
 ```
+
+---
+
+### [Enabling Soft Delete and Do Not Purge on a Key Vault](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=5&mode=live)  
+
+#### Soft Delete
+
+In the event of any of the KeyVault resources being accidentally deleted users would be unable to retrieve their secrets which could result in serious consequences. The typical scenario is that of a key used to encrypt the HDD of virtual machine i.e. for backups. If the key were deleted being the deletion permanent would result in the VHD become unrecoverable.
+
+For this reason **Zure Key Vault** offer a **soft delete option** whic **allows recovery of deleted vaults and vault abjects including keys, secrets and certificates**. ThePowershell script exerpt below enables the softt delete optionson an Azure KeyVault.
+
+```
+$kv = Get-AzureRmKeyVault -VaultName "MyVault1"
+$resource = Get-AzureRmResource -ResourceId $kv.Id
+($resource).Properties | Add-Member -MemberType "NoteProperty" -Name "enableSoftDelelet" -Value "true"
+Set-AzureRmResource -ResourceId $resource.Id -Properties $resource.Properties
+```
+
+#### Do Not Purge
+
+**Do Not Purge** is to **prevent accidental purge of deleted vaults**
+
 
 ---
 
