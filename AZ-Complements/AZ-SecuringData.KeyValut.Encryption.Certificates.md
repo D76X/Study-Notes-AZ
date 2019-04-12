@@ -223,6 +223,7 @@ The following code exerpt shows hot to use the client library to retrive a secre
 var kv = new KeyVaultClient(KeyVaultClient.AuthenticationCallback(KeyVaultService.GetToken));
 var secret = kv.GetSecretAsync(WebConfigiration.AppSettings["ConnectionString"]).Result;
 KeyVaultService.ConnectionString = secret.Value;
+```
 
 ---
 
