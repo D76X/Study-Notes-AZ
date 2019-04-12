@@ -216,5 +216,13 @@ Then the **web.config** must be edited so that the **connection strings and othe
 
 It is important to understand that **it is now safe to leave these two pieces of information in the web.config** because they can only be used to access the KeyVault from the **Azure AppService** that has been **registered with Azure AD for a particular registered domain that is URL**. In the unfortunate case the any of all of the items **ClientID, ClientSecret or KeyVault Keys** were leaked these could not be used from any other domain but the registered domain for this specific **ServiceApp** to which any third-party should not have access unless they are the account managers. Moreover, the **ClientSecret can be revoked and a new one can be genereated** in case it was compromized.
 
+
+The following code exerpt shows hot to use the client library to retrive a secret from the vault. 
+
+```
+var kv = new KeyVaultClient(KeyVaultClient.AuthenticationCallback(KeyVaultService.GetToken));
+var secret = kv.GetSecretAsync(WebConfigiration.AppSettings["ConnectionString"]).Result;
+KeyVaultService.ConnectionString = secret.Value;
+
 ---
 
