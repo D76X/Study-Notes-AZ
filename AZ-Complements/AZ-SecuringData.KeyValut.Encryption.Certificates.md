@@ -15,6 +15,8 @@
 
 - [Understanding Hardware Security Modules (HSMs)](https://www.cryptomathic.com/news-events/blog/understanding-hardware-security-modules-hsms)  
 
+- [BREACH LEVEL INDEX](https://breachlevelindex.com/)
+
 ---
 
 ### [Leaning Goals for Microsoft Azure Developer: Securing Data by by Reza Salehi](https://app.pluralsight.com/player?course=securing-virtual-machines-azure-key-vault&author=gary-grudzinskas&name=securing-virtual-machines-azure-key-vault-m0&clip=0&mode=live) 
@@ -248,6 +250,84 @@ Set-AzureRmResource -ResourceId $resource.Id -Properties $resource.Properties
 
 **Do Not Purge** is to **prevent accidental purge of deleted vaults**
 
+
+---
+
+## [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas)  
+
+### Learning Goals
+
+- Setup Azure key Vault
+- Authorize your application to access the vault with AzureAD
+- Accessing the vault from your applications
+- Using the Vault to wrap local encryption keys for performance
+- Encrypting connection strings as Key Vault secrets to get flexible database routing in the cloud
+- Audit logging for compliance
+
+---
+
+[BREACH LEVEL INDEX](https://breachlevelindex.com/)
+
+This vompany collects statistics related to data breaches and their web sites condenses this information nicely on their [homepage](https://breachlevelindex.com/).
+
+The number of **wordwide** breaches is huge. However, **what is even more startling is the statement that can be read on this homepage and that is reported below.
+
+```
+ONLY  4%  of breaches were “Secure Breaches” where encryption was used and the stolen data was rendered useless.
+```
+---
+
+### Consequence of databreaches for companies
+
+- Reputational damage
+- Loss of sales
+- Customers switching to competitors
+- Legal Actions taken by customers, other companies or authorities
+- Compliance costs
+- Damage to customers
+
+### Consequence of databreaches for individuals
+
+- Thefts of identity and personal data
+- Risk of impersonation
+- Financial loss or of financial data
+- Compromised credit cards
+- Compromized transaction history
+
+---
+
+### Examples of data breaches and exploits
+
+- [Bounty pregnancy club fined £400,000 over data handling](https://www.bbc.com/news/technology-47908222)
+
+- [Zain Qaiser: Student jailed for blackmailing porn users worldwide](https://www.bbc.com/news/uk-47800378)  
+
+---
+
+### Types of threats
+
+1. External
+2. Internal i.e. employees
+
+---
+
+### [ General Data Protection Regulation (GDPR) - GDPR EU.org](https://www.gdpreu.org/)  
+
+- [GDPR Overview](https://www.gdpreu.org/)  
+- [Fines and Penalties](https://www.gdpreu.org/compliance/fines-and-penalties/)
+- [Who Must Comply](https://www.gdpreu.org/the-regulation/who-must-comply/)  
+- [Timeline](https://www.gdpreu.org/the-regulation/timeline/)
+- [FAQ](https://www.gdpreu.org/faq/)
+
+#### The main aims of GDPR 
+
+- personal data protection
+- personal dat safe storage 
+- personal data safe handling 
+- collection of personal data  provided explicit consents 
+
+#### What happens if I do not comply?
+You may be fined **for up to €20mm or 4% of your worldwide turnover (revenue), whichever is greater**. You may also be subject to lawsuits by affected data subjects. Learn more here.
 
 ---
 
