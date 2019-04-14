@@ -29,19 +29,20 @@ The following discusses the **three main authorization and authentication flows 
 ---
 #### Summary  
 
-1. Client Credential Grant
+1. Client Credential Grant Flow
     - The client is a backend systemthat is some code on a server!
     - The **is no access delegation in this specific flow** it is just **machine to machine communication** 
     - There is **no user involvement in this flow** everything happens in name of the client application
     - Direct Access by the client application
     - Access Token obtained using the client credential
 
-2. Autorization Code Grant 
-    - **Delegated access** to a **ackend application**
-    - **Access Token** obtained by **exchanging** a **client code** with **client credentials**
-    - **Refresh Token** can be used with **Client Credentials**
+2. Autorization Code Grant Flow
+    - User **Delegates access** to resources on thrird-party RSs but owned by them to a **Native Application**
+    - **Access Token and Refresh Token obtained by exchanging** an **Authorization Token** 
+    - **Refresh Token** can be used with **Client Credentials** to obtain a new **Access Token**
+    - Can only be used with **Native Apps** where the **Client Application Secrets** can be stored securely and that have the right to open the browser on the user's system. 
 
-3. Implicit Grant
+3. Implicit Grant Flow
     - **Delegated Access** to a **frontend application**
     - **Access Token directly obtained through redirection**
     - It **does not** have or need a **refresh token**
@@ -172,9 +173,10 @@ In this scenario an application offers a feature such that the user of the appli
 
 This is **the most secure OAuth flow and the only one for which it is possible to issue a refresh token in addition to the access token**. 
 
-- **Delegated access** to a **ackend application**
+- User **Delegates access** to resources on thrird-party RSs but owned by them to a **Native Application**
 - **Access Token and Refresh Token obtained by exchanging** an **Authorization Token** 
-- **Refresh Token** can be used with **Client Credentials**
+- **Refresh Token** can be used with **Client Credentials** to obtain a new **Access Token**
+- Can only be used with **Native Apps** where the **Client Application Secrets** can be stored securely and that have the right to open the browser on the user's system. 
 
 #### The nodes
 
@@ -199,6 +201,24 @@ This is **the most secure OAuth flow and the only one for which it is possible t
 #### The most important steps in this flow are 6 & 7
 
 **Step 6 is crucial for the security of this flow** the **AS** can redirect the Browser on the user machine **only to the URI that the Client Application has previously registered with it**. This makes it impossible for the **Access Token** to be send to any unregistered application i.e. the URI of an attacker. The client application has started the whole process but up to step 6 the Authorization Server knows nothing about the Client Application involvement it has only interacted with the user through the brower and let them **delegate** access to some of their resources on some resource server. In aknowlegment of this the AS has issued a **Authorization Token** that will only be sent to the **registered URL**.
+
+Also the **Authorization code** is only valid for **1-time used and very short-lived i.e. under a minute**.
+
+#### The role of the Refresh Token
+
+While the **Authorization Token** is short lived the **Refresh Token** is long lived i.e. months or even years. In this flow the user goes through the **Authentication** on the **AS** and clearly we want this to happen only occasionally for usability reasons. Without a **Refresh Token** on the expiration of the **Authorization Token** the **Authentication of teh user** and the **delegation** would have to be rpeated. Howver, with the **Refresh Token** the **Client Application** acquires the right to **requiest a new short-lived Access Token** in order to access the resources to which the user has agreed **delegated access**. Howver, in order to obtain a new **Access Token** it must present to the **AS** the following
+
+- Refresh Token
+- The Client Application Secrets
+
+Only if both are presented and still valid the AS issues
+
+- A new Access Token
+- A new Refresh Token
+
+This mechanism makes sure that **in those cases in which an Access Token has been compromised (stolen) it cannot be used by attackrs for long period of time thus limiting the liability**. Howeverm this **security feature** relies on the **Client Secrets to be stored securely by the Client Application** as even the Refresh Token could beleaked but it would be worthless without the cleint secrets.
+
+This is also why **this flow is not suitable for application that runs in a broweser** as a Browser does not make it possible to safely store the Client Application Secrets. It is only used with **Native Applications** that is applications that runs on a Operation System.
 
 ---
 
