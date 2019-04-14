@@ -30,17 +30,19 @@ The following discusses the **three main authorization and authentication flows 
 #### Summary  
 
 1. Client Credential Grant Flow
-    - The client is a backend systemthat is some code on a server!
+    - The client is a backend system that is some code on a server!
     - The **is no access delegation in this specific flow** it is just **machine to machine communication** 
     - There is **no user involvement in this flow** everything happens in name of the client application
     - Direct Access by the client application
     - Access Token obtained using the client credential
+    - Typically the backend application here needs only read-only access to public resources on some authoritation server that is information that is publiccly available which may or may not be related to some users but that are anyway publicly available anyway
 
 2. Autorization Code Grant Flow
     - User **Delegates access** to resources on thrird-party RSs but owned by them to a **Native Application**
     - **Access Token and Refresh Token obtained by exchanging** an **Authorization Token** 
     - **Refresh Token** can be used with **Client Credentials** to obtain a new **Access Token**
-    - Can only be used with **Native Apps** where the **Client Application Secrets** can be stored securely and that have the right to open the browser on the user's system. 
+    - Can only be used with **Native Apps** where the **Client Application Secrets** can be stored securely and that have the right to open the browser on the user's system.  Notice tha a **AppService** which is a **backend application** counts as a **Native Application** as it has a way to securely store Client Secrets. 
+    - This flow is typically used to delegate access to user-specifi, user-reserved information as read-only resources or to even delegate write access to user owned resources
 
 3. Implicit Grant Flow
     - **Delegated Access** to a **frontend application**
@@ -135,11 +137,11 @@ The registration and the client secrets allow **the user of the application** to
 
 ---
 
-#### Scenario 1 - Machine to Machine
+### Scenario 1 - Machine to Machine
 
 A web site wants to show a number of tweeter feeds on the website. In this case the client application is the website thus there is no real user and the resource is the tweeter api. There is no actual user involved. The application only need to be registered with the tweeter api and get the secrets and then use those to get an access token to be able to access the resources exposed by teh tweeter api.
 
-## Client Credential Grant Flow
+### Client Credential Grant Flow
 
 This is the easiest of the OAuth Flows
 
@@ -148,6 +150,7 @@ This is the easiest of the OAuth Flows
 - There is **no user involvement in this flow** everything happens in name of the client application
 - Direct Access by the client application
 - Access Token obtained using the client credential
+- Typically the backend application here needs only read-only access to public resources on some authoritation server that is information that is publiccly available which may or may not be related to some users but that are anyway publicly available anyway
 
 #### The nodes
 
@@ -165,18 +168,19 @@ This is the easiest of the OAuth Flows
 
 ---
 
-#### Scenario 2 - Native App on bahalf of the user
+### Scenario 2 - Native App (Backend App) on bahalf of the user
 
 In this scenario an application offers a feature such that the user of the application can schedule tweets to be posted on his tweeter account with a selected schedule. In this case the user must delegate access to his or her tweeter profile to the application. In this case there **must be a way for the ... of asking the user to authorize the application to post tweets on their account**. 
 
-2. Autorization Code Grant Flow 
+### Autorization Code Grant Flow 
 
 This is **the most secure OAuth flow and the only one for which it is possible to issue a refresh token in addition to the access token**. 
 
 - User **Delegates access** to resources on thrird-party RSs but owned by them to a **Native Application**
 - **Access Token and Refresh Token obtained by exchanging** an **Authorization Token** 
 - **Refresh Token** can be used with **Client Credentials** to obtain a new **Access Token**
-- Can only be used with **Native Apps** where the **Client Application Secrets** can be stored securely and that have the right to open the browser on the user's system. 
+- Can only be used with **Native Apps** where the **Client Application Secrets** can be stored securely and that have the right to open the browser on the user's system. Notice tha a **AppService** which is a **backend application** counts as a **Native Application** as it has a way to securely store Client Secrets. 
+ - This flow is typically used to delegate access to user-specifi, user-reserved information as read-only resources or to even delegate write access to user owned resources
 
 #### The nodes
 
@@ -274,23 +278,38 @@ Host: twitter.example.com
 
 ---
 
-#### Scenario 3 - Machine to Machine
+### Scenario 3 - Frontend App (i.e JavaScript or SPA) on bahalf of the user
 
+In scenario 2 it could be relied on the fact that the client application secrets can be stored safely on a backend for example
+
+- A WPF application on the User OS
+- A iOS app
+- An AppService which hosts a stateless ASP.Net Core site
+
+However, think of the scenario in which the application runs as a SPA in the user's browser. **The user's browser is not a safe place to store the client application credentials** thus **the Autorization Code Grant Flow cannot be employed**. Stll we would like the user of this app to be able for example tio post tweets to their tweet account directly from this SPA which means that the user needs some means to delegate the authorization to write tweets to their accounts to teh application. 
+
+### Implicit Grant Flow
+    
+- **Delegated Access** to a **frontend application** 
+- **Access Token directly obtained through redirection**
+- It **does not** have or need a **refresh token**
 
 #### The nodes
 
 1. The User
-2. The Browser
-3. The Client Application
-4. The Authorization Sever
-5. The Resource Server
+2. The Client Application
+3. The Authorization Sever
+4. The Resource Server
 
 #### The flow 
 
-3. Implicit Grant Flow
-    - **Delegated Access** to a **frontend application**
-    - **Access Token directly obtained through redirection**
-    - It **does not** have or need a **refresh token**
+1. Client (i.e. SPA) requests access to the Authorization Server i.e. through httService
+2. The AS redirects the user browser to the authentication page of fro the resource the SPA wants to gain access to
+3. The user authenticates on the **Authorization Server** i.e. the Tweeter Authorization Server or Azure AD in an enterprise
+4. The AS asks the user whether they want to **delegate access to the protected resources to the client application that is the SPA**
+5. The AS **redirects the browser to the application redirect URI that was registered with it and in the redirect URI it provides the Access Token directly** that is **there is no Authorization Token to echange as in the previous flow!** 
+6. The client can now use the **Acess Token** to access the resource on teh Resource Server
+7. The Resource Token retunrs the resource if reuested
 
 ---
 
