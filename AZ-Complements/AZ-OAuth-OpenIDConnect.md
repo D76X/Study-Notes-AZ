@@ -31,8 +31,8 @@ The following discusses the **three main authorization and authentication flows 
 
 1. Client Credential Grant
     - The client is a backend systemthat is some code on a server!
-    - The **is no access delegation in this specific flow** it is just **machine to machine communication**
-    - There is **no user involvement in this flow**
+    - The **is no access delegation in this specific flow** it is just **machine to machine communication** 
+    - There is **no user involvement in this flow** everything happens in name of the client application
     - Direct Access by the client application
     - Access Token obtained using the client credential
 
@@ -134,15 +134,27 @@ The registration and the client secrets allow **the user of the application** to
 
 ---
 
+#### Scenario 1 - Machine to Machine
+
+A web site wants to show a number of tweeter feeds on the website. In this case the client application is the website thus there is no real user and the resource is the tweeter api. There is no actual user involved. The application only need to be registered with the tweeter api and get the secrets and then use those to get an access token to be able to access the resources exposed by teh tweeter api.
+
 ## Client Credential Grant Flow
 
 This is the easiest of the OAuth Flows
 
 - The client is a backend systemthat is some code on a server!
 - The **is no access delegation in this specific flow** it is just **machine to machine communication**
-- There is **no user involvement in this flow**
+- There is **no user involvement in this flow** everything happens in name of the client application
 - Direct Access by the client application
 - Access Token obtained using the client credential
+
+#### The nodes
+
+1. The Client Application
+2. The Authorization Sever
+3. The Resource Server
+
+#### The flow 
 
 1. The client presents the client application secrets to the AS
 2. The AS returns an AT to the client
@@ -150,7 +162,43 @@ This is the easiest of the OAuth Flows
 4. The RS authorizes the client by means of the access token
 5. The RS returns the required resource to the client application
 
-#### Scenario
+---
+
+#### Scenario 2 - Operation on bahalf of the user
+
+In this scenario an application offers a feature such that the user of the application can schedule tweets to be posted on his tweeter account with a selected schedule. In this case the user must delegate access to his or her tweeter profile to the application. In this case there **must be a way for the ... of asking the user to authorize the application to post tweets on their account**. 
+
+2. Autorization Code Grant Flow 
+
+This is **the most secure OAuth flow and the only one for which it is possible to issue a refresh token in addition to the access token**. 
+
+- **Delegated access** to a **ackend application**
+- **Access Token and Refresh Token obtained by exchanging** an **Authorization Token** 
+- **Refresh Token** can be used with **Client Credentials**
+
+#### The nodes
+
+1. The User
+2. The Browser
+3. The Client Application
+4. The Authorization Sever
+5. The Resource Server
+
+#### The flow 
+
+0. The Client Application does not have an access token to access the rsource on beahlf of the user
+1. The Client Application opens a the default Browser on the User's system to reach the Authorization Server at its URL
+2. The AS (i.e. Azure AD, ADFS or Tweeter's AS) redirect the browser thus the user to a log-inpage in order to **authenticate the user with the AS**.
+3. The User authenticates on the AS
+4. The AS redirects the user in the browser to a page where they are asked whether they wish to grant the Client Application access their protected resource on their bahalf that is **AS asks the user whether they wish to delegate the CA to access the user resource**
+5. The user **delegates** the **Client Application**
+6. The **AS** issues an **Autorization Tonen** to the **Client Application** by **redirecting the browser to the registered redireted URI**
+7. The **Authorization Token** does not grant any access and must be **exchanged** by the Client Application with a **Access Token** by presenting the **Authorization Token** to the **AS** **together with the Client Application Secrets**. The **AS** checks that the provided **Authorization Token & Cleint Secrets are genuine and still valid** and returns to the Client Application an **Access Token & Refresh Token**.
+8. Finally with the **Access Token** the application can now access the resource on the RS i.e. the Tweeter Api.
+
+#### The most important steps in this flow are 6 & 7
+
+**Step 6 is crucial for the security of this flow** the **AS** can redirect the Browser on the user machine **only to the URI that the Client Application has previously registered with it**. This makes it impossible for the **Access Token** to be send to any unregistered application i.e. the URI of an attacker. The client application has started the whole process but up to step 6 the Authorization Server knows nothing about the Client Application involvement it has only interacted with the user through the brower and let them **delegate** access to some of their resources on some resource server. In aknowlegment of this the AS has issued a **Authorization Token** that will only be sent to the **registered URL**.
 
 ---
 
