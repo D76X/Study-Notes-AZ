@@ -165,7 +165,7 @@ This is the easiest of the OAuth Flows
 
 ---
 
-#### Scenario 2 - Operation on bahalf of the user
+#### Scenario 2 - Native App on bahalf of the user
 
 In this scenario an application offers a feature such that the user of the application can schedule tweets to be posted on his tweeter account with a selected schedule. In this case the user must delegate access to his or her tweeter profile to the application. In this case there **must be a way for the ... of asking the user to authorize the application to post tweets on their account**. 
 
@@ -219,6 +219,78 @@ Only if both are presented and still valid the AS issues
 This mechanism makes sure that **in those cases in which an Access Token has been compromised (stolen) it cannot be used by attackrs for long period of time thus limiting the liability**. Howeverm this **security feature** relies on the **Client Secrets to be stored securely by the Client Application** as even the Refresh Token could beleaked but it would be worthless without the cleint secrets.
 
 This is also why **this flow is not suitable for application that runs in a broweser** as a Browser does not make it possible to safely store the Client Application Secrets. It is only used with **Native Applications** that is applications that runs on a Operation System.
+
+### Request example
+
+```
+https://twitter.example.com/auth
+    ?response_type=code  
+    &client_id=MyCrazuApp  
+    &scope=read write  
+    &redirect_uri=https://mydomain/..../mycallback.asp
+    &state=65976ushdaD
+```
+
+The **?response_type=code** is the bit that specify that the Client Application wants to enage in this flow. 
+
+The `&state=65976ushdaD` prevents certain attacks...
+
+### Response example
+
+```
+https://mydomain/..../mycallback.asp
+    ?code=735nnwrj804nm    
+    &state=65976ushdaD
+```
+
+`code=735nnwrj804nm ` is the **Authorization Code** to be exchanged.
+
+### Exchange - Server to Server
+
+```
+POST /auth
+Authorization: Basic fhf09r4ekls;dk
+Host: twitter.example.com
+
+    grant_type=authorization_code
+    &redirect_uri=https//mydomain...../twittercallback.asp
+    &client_id=MyCrazuApp 
+    ?code=735nnwrj804nm     
+```
+
+`Basic fhf09r4ekls;dk` transmitts the **Ckleint Credentials (Secrets)**
+`?code=735nnwrj804nm` is the **Authorization Code to be exchanged**.
+
+### Exchange Response - Server to Server
+
+```
+{
+    "access_token": "j48508rfivnt80895fdj",
+    "expires_in": 300,
+    "token_type": "bearer",
+    "refresh_token": "768jnfdp842809nmfsl"
+}
+```
+
+---
+
+#### Scenario 3 - Machine to Machine
+
+
+#### The nodes
+
+1. The User
+2. The Browser
+3. The Client Application
+4. The Authorization Sever
+5. The Resource Server
+
+#### The flow 
+
+3. Implicit Grant Flow
+    - **Delegated Access** to a **frontend application**
+    - **Access Token directly obtained through redirection**
+    - It **does not** have or need a **refresh token**
 
 ---
 
