@@ -15,6 +15,7 @@
 ### [Leaning Goals Introduction to OAuth 2.0 and OpenID Connect • Philippe De Ryck](https://www.youtube.com/watch?v=GyCL8AJUhww) 
 
 - What OAuth is
+- Why we need OAuth
 - What OpenID Connect is
 - What the main OAuth flows are and when to use each
 - What the main OpenID Connect flows are and when to use each
@@ -83,6 +84,12 @@ If you look at this from **the point of you of the user's Tweeter account** this
 **OAuth** is a **specification** that provides the details of the communication between **AS and CA** in order to fulfill the first tow steps (1 & 2) described above that is up to the issuance of the **AT**. 
 
 However, **all implememnations** will also include the details of the last two steps (3 & 4)
+
+---
+
+### Why we need OAuth
+
+The advantage of OAuth become apparent when you think that **a single authorization server AS can issue Access Tokes to a large number of Client Application for a large number of Resource Servers**. OAuth provides a standard mechanism to achieve delegated access independent of the client application and the resource server.
 
 ---
 
