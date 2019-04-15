@@ -14,12 +14,27 @@
 
 ---
 
-| Attack Vector| Security Weaknesses | Tec|
-| ------------ | -----------------------------------|----------------|
-| `SHIFT+F10`  | Mouse Right Click.|  
-| `` | .|
-| `` | .|
-| `` | .|
+#### Attack Vector  
+A measure how hard is to fabricate the exploits which may depends on whether tools to assist in the design, deplyment and automation of the exploit exist.
+
+#### Security Weakness 
+A measure of the surface area available to the attack which in turn depends on two orthogonal factors.  
+
+    1. Prevalence : a measure of the number of potential item exposed by an application which may become targets or doors for the exploit.
+
+    2. Detectability: a measure of how difficult is for the attackers to dispover whether there exist entry points through with deliver their attack.
+
+#### Technical Impact
+How serious the consequences of a successful attack may be for the buisness, system or organization that falls victim of it.  
+
+---
+
+| Vulnerability | Attack Vector        | Security Weaknesses                        | Technical Impact |
+|---------------| -------------------- | -------------------------------------------|------------------|
+| SQL Injection | Exploitability Easy  | Prevalence Common - Detectability Average  | Severe           |
+|| `` | .||
+|| `` | .||
+|| `` | .||
 
 ---
 
