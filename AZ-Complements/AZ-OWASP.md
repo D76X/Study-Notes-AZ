@@ -12,6 +12,8 @@
 
 ## Complementary Resources
 
+- [LulzSec](https://en.wikipedia.org/wiki/LulzSec)
+
 ---
 
 #### Attack Vector  
@@ -29,12 +31,61 @@ How serious the consequences of a successful attack may be for the buisness, sys
 
 ---
 
-| Vulnerability | Attack Vector        | Security Weaknesses                        | Technical Impact |
-|---------------| -------------------- | -------------------------------------------|------------------|
-| SQL Injection | Exploitability Easy  | Prevalence Common - Detectability Average  | Severe           |
+| Vulnerability   | Attack Vector        | Security Weaknesses                        | Technical Impact |
+|-----------------| -------------------- | -------------------------------------------|------------------|
+| (SQL) Injection | Exploitability Easy  | Prevalence Common - Detectability Average  | Severe           |
+| Impersonation   | Exploitability Avg.  | Widespread - Average                       | Severe           |
 || `` | .||
 || `` | .||
-|| `` | .||
+
+---
+
+## (SQL) Injection
+
+### Typical Strategy
+
+Strings manipulation and injection of query structure from query data.
+
+### Typical Remedies
+
+1. Whitelist untrusted data (expected data patterns or types).
+2. Parameterization of statements by separation of the query structure from its data.
+3. Restrict persmissions of the user to the minimum necessary inorder to achieve their purpose in each context. This is also known as **Principle of Least Priviledge.**
+
+### References 
+
+- [LulzSec](https://en.wikipedia.org/wiki/LulzSec)
+- [Who or what is LulzSec?](https://www.youtube.com/watch?v=Esbk27dXxXc)  
+- [The LulzSec hackers who boasted they were “Gods” await their sentence](https://nakedsecurity.sophos.com/2013/05/16/lulzsec-hackers-wait-sentence/)  
+
+---
+
+## Broken Authentication & Session Management (Impersonation Hijacking)
+
+### Typical Strategies
+
+1. Retrieve **secrets** from the user PC (system).  
+This may be achieved through physical intrusion of malaware.
+
+2. Auth Cookie Theft.  
+Typically achieved through sniffing over HTTP for example at an Internet Cafe or via Cross Site Scripting (XSS).
+
+3. Session ID Theft.  
+This may happen when the system persist the session ID in the URL as it was in old ASP systems. It could also be logged to file by the web server and be available to whoever have access to the logs.
+
+4. Exploitation of systems that requires weak credentials.
+
+5. Explotation of system that do not have a policy on the number of failed logins attemps before password recovery.
+
+6. Explotation of Weak Password Resets. 
+
+### Typical Remedies
+
+1. 
+
+### References 
+
+- []()
 
 ---
 
