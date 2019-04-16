@@ -233,6 +233,8 @@ KeyVaultService.ConnectionString = secret.Value;
 
 ### [Enabling Soft Delete and Do Not Purge on a Key Vault](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=5&mode=live)  
 
+#### [Demo on KeyVault Soft Delete & Do Not Purge](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=6&mode=live)  
+
 #### Soft Delete
 
 In the event of any of the KeyVault resources being accidentally deleted users would be unable to retrieve their secrets which could result in serious consequences. The typical scenario is that of a key used to encrypt the HDD of virtual machine i.e. for backups. If the key were deleted being the deletion permanent would result in the VHD become unrecoverable.
@@ -242,14 +244,68 @@ For this reason **Zure Key Vault** offer a **soft delete option** whic **allows 
 ```
 $kv = Get-AzureRmKeyVault -VaultName "MyVault1"
 $resource = Get-AzureRmResource -ResourceId $kv.Id
-($resource).Properties | Add-Member -MemberType "NoteProperty" -Name "enableSoftDelelet" -Value "true"
+($resource).Properties | Add-Member -MemberType "NoteProperty" -Name "enableSoftDelete" -Value "true"
 Set-AzureRmResource -ResourceId $resource.Id -Properties $resource.Properties
+```
+
+The following script recovers a KeyVault that has been soft deleted
+
+```
+Undo-AzureRmKeyVaultRemoval -VaultName "MyVault1" -ResourceGroupName "MyRG1" -Location "North-Europe"
 ```
 
 #### Do Not Purge
 
-**Do Not Purge** is to **prevent accidental purge of deleted vaults**
+**Do Not Purge** is to **prevent accidental purge of deleted vaults including keys, secrets and certificates**. As **Soft-Deleted KeyVault items can still be purged** by default the **Do Not Purge** features prevents the accidental permanent deletion of such soft-deleted resources. The Powershell script that enables this feature si virtually the same as the one obove expect for the `-Name "enablePurgeProtection"` switch.
 
+```
+$kv = Get-AzureRmKeyVault -VaultName "MyVault1"
+$resource = Get-AzureRmResource -ResourceId $kv.Id
+($resource).Properties | Add-Member -MemberType "NoteProperty" -Name "enablePurgeProtection" -Value "true"
+Set-AzureRmResource -ResourceId $resource.Id -Properties $resource.Properties
+```
+
+The following Powershell may be used in order to remove a KeyVault. The switch `-RemovedState` causes Azure to **permanently delete**  the KeyVault 
+**even if it is in soft-deleted state**. The only way to prevent this permanent deletion is to enable **Do Not Purge** on it.
+
+```
+RemoveAzureRmKeyVault -VaultName -ResourceGroupName "MyRG1" -Location "North-Europe" -RemovedState
+```
+---
+
+## [Managed Service Identity (MSI)](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=7&mode=live)  
+
+**Managed Service Identity (MSI)** is a **different approach to security** with respect to **Azure KeyVault**. 
+However, they share the same purpose.
+
+---
+
+## Azure KeVault vs. MSI
+
+In the following the typical case in which an application needs to access a SQL database at run-time is considered. In this scenario the application will need to read the connection at run-time and of course leaving the connection string in any form of test in the web.config or app.config is bad practice. 
+
+**Azure KeyVault and Managed Service Identity (MSI)** offer two alternative ways to solve this problem.
+
+### How this problem is solved in Azure KeyVault
+
+1. There is a text-based value that must kept secret, stored and accessed securely.
+2. The text-based value is stored as encrypted value on the KeyVault.
+3. An Application is registered with **Azure AD** and in the same context permissions can be granted to its **client identity (client ID & Sectret)** in regard to the KeyVault from which the application will need to be granted access to. 
+4. The AppService can now retrieve the text-based value at run-time from teh KeyVault
+ 
+### How this problem is solved by Managed Service Identity (MSI)
+
+In this case we must somehow **configure Azure SQL Server** to **accept connections from one or more specific AppService**. In other words, this is the process of **authoirization of an application (AppService) to a third-party such as Azure SQL Server**. This can be achieved by means of **Azure AD**.
+
+1. Create a new **Azure AD Identity for the AppService**.
+2. Configure the third-party (Azure SQL Server) to grant this identity the permissions it needs. 
+3. The client application (AppSevice) presents itself to the third party with its Azure ID identity.
+
+---
+
+### [Which one is best Azure KeyVault and Managed Service Identity (MSI)?](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=7&mode=live)  
+
+**Managed Service Identity (MSI) is recommended over Azure KeyVault** as the latter still relies on **clent ID + client secret (client identity)** to access the KeyVault. This emplys the classic **OAuth Autorization Code Grant Flow** which is very secure but relays on the **secure storage of client secretes**. Coversely, Managed Service Identity **(MSI) does not need client secrets at all** it allows direct access to the `third-party` resource i.e. Azure SQL Server simply leveragin **Azure ID and the identity issued to the AppService**. 
 
 ---
 

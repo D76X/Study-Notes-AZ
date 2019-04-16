@@ -23,3 +23,7 @@
 
 ---
 
+https://www.owasp.org/images/7/72/OWASP_Top_10-2017_%28en%29.pdf.pdf  
+https://www.cloudflare.com/learning/security/threats/owasp-top-10/  
+https://www.owasp.org/index.php/OWASP_Top_Ten_Cheat_Sheet  
+https://azure.microsoft.com/en-us/blog/detecting-threats-with-azure-security-center/ 
