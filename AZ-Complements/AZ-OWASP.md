@@ -10,6 +10,11 @@
 
 ## Related Resources
 
+- [OWASP Top 10 - 2017 PDF](https://www.owasp.org/images/7/72/OWASP_Top_10-2017_%28en%29.pdf.pdf)  
+- [What Is OWASP? What Are The OWASP Top 10?](https://www.cloudflare.com/learning/security/threats/owasp-top-10/)  
+- [OWASP Top Ten Cheat Sheet](https://www.owasp.org/index.php/OWASP_Top_Ten_Cheat_Sheet)  
+- [OWASP Top Ten Cheat Sheet](https://azure.microsoft.com/en-us/blog/detecting-threats-with-azure-security-center/)  
+
 ## Complementary Resources
 
 - [LulzSec](https://en.wikipedia.org/wiki/LulzSec)
@@ -42,7 +47,7 @@ How serious the consequences of a successful attack may be for the buisness, sys
 
 ## (SQL) Injection
 
-### Typical Strategy
+### Typical Strategies to perform the attak
 
 Strings manipulation and injection of query structure from query data.
 
@@ -62,34 +67,28 @@ Strings manipulation and injection of query structure from query data.
 
 ## Broken Authentication & Session Management (Impersonation Hijacking)
 
-### Typical Strategies
+### Typical Strategies to perform the attak
 
-1. Retrieve **secrets** from the user PC (system).  
+1. **Retrieve secrets from the user PC (system)**    
 This may be achieved through physical intrusion of malaware.
-
-2. Auth Cookie Theft.  
+2. **Auth Cookie Theft**  
 Typically achieved through sniffing over HTTP for example at an Internet Cafe or via Cross Site Scripting (XSS).
-
-3. Session ID Theft.  
+3. **Session ID Theft**  
 This may happen when the system persist the session ID in the URL as it was in old ASP systems. It could also be logged to file by the web server and be available to whoever have access to the logs.
-
-4. Exploitation of systems that requires weak credentials.
-
-5. Explotation of system that do not have a policy on the number of failed logins attemps before password recovery.
-
-6. Explotation of Weak Password Resets. 
+4. Exploitation of systems that employ **weak credentials**
+5. Explotation of system that have a **weak policy on the number of failed logins** attemps before password recovery.
+6. Explotation of **Weak Password Reset** 
 
 ### Typical Remedies
 
-1. 
+Normally the persistence of the authenticated state of a logged user relies on cookies thus is especially imprtant to make them secure.
+
+1. **Use Cookies with HttpOnly flag**  
+This flag on a cookie tells the Browser that 
+2.
 
 ### References 
 
 - []()
 
 ---
-
-https://www.owasp.org/images/7/72/OWASP_Top_10-2017_%28en%29.pdf.pdf  
-https://www.cloudflare.com/learning/security/threats/owasp-top-10/  
-https://www.owasp.org/index.php/OWASP_Top_Ten_Cheat_Sheet  
-https://azure.microsoft.com/en-us/blog/detecting-threats-with-azure-security-center/ 
