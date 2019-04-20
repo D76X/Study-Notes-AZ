@@ -14,6 +14,14 @@
 - [What Is OWASP? What Are The OWASP Top 10?](https://www.cloudflare.com/learning/security/threats/owasp-top-10/)  
 - [OWASP Top Ten Cheat Sheet](https://www.owasp.org/index.php/OWASP_Top_Ten_Cheat_Sheet)  
 - [OWASP Top Ten Cheat Sheet](https://azure.microsoft.com/en-us/blog/detecting-threats-with-azure-security-center/)  
+- [Use Cookies with HttpOnly flag](https://www.owasp.org/index.php/HttpOnly)  
+- [**Use Cookies with Secure flag**](https://www.owasp.org/index.php/SecureFlag)   
+- [Broken Authentication and Session Management](https://www.owasp.org/index.php/Broken_Authentication_and_Session_Management)
+- [The problem with OAuth for Authentication](http://www.thread-safe.com/2012/01/problem-with-oauth-for-authentication.html)  
+- [XSS Payload List - Cross Site Scripting Vulnerability Payload List](https://www.kitploit.com/2018/05/xss-payload-list-cross-site-scripting.html)  
+- [XSS Tutorial #1 - What is Cross Site Scripting?](https://www.youtube.com/watch?v=M_nIIcKTxGk)  
+- [How does CORS prevent XSS?](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss)  
+
 
 ## Complementary Resources
 
@@ -40,8 +48,9 @@ How serious the consequences of a successful attack may be for the buisness, sys
 |-----------------| -------------------- | -------------------------------------------|------------------|
 | (SQL) Injection | Exploitability Easy  | Prevalence Common - Detectability Average  | Severe           |
 | Impersonation   | Exploitability Avg.  | Widespread - Average                       | Severe           |
-|| `` | .||
-|| `` | .||
+| XSS             | Exploitability Avg.  | Very Widespread - Easy                     | Moderate         |
+||||
+||||
 
 ---
 
@@ -81,14 +90,68 @@ This may happen when the system persist the session ID in the URL as it was in o
 
 ### Typical Remedies
 
-Normally the persistence of the authenticated state of a logged user relies on cookies thus is especially imprtant to make them secure.
+Normally the **persistence of the authenticated state of a logged user relies on cookies** thus is especially imprtant to **make them secure**.
 
-1. **Use Cookies with HttpOnly flag**  
-This flag on a cookie tells the Browser that 
-2.
+1. [**Use Cookies with HttpOnly flag**](https://www.owasp.org/index.php/HttpOnly)     
+This flag on a cookie **makes it immune to a Criss Site Scripting (XSS) attack** tells the Browser that the cookie cannot be accessed through client side script As a result, even if a cross-site scripting (XSS) flaw exists, and a user accidentally accesses a link that exploits this flaw, the browser (primarily Internet Explorer) will not reveal the cookie to a third party.
+2. [**Use Cookies with Secure flag**](https://www.owasp.org/index.php/SecureFlag)  
+When a Cookie is set with this flag can only be sent over SSL (HTTPS). For example, the Cookie cannot be sent when the user is logged on a public wireless network in a Cafe. This prevents the Cookie and so the session secrects to be hijacked by network traffic sniffer, monitors or proxies.
+3. **Decrease the Window Risk**  
+By setting a suffiently short time window before the authenication credentials stored in a cookie expires it is possible to decrese the likelyhood that a hijacked cookies may be used to perform an impersonation. The expiration window should be a balanced compromise between security and usability in order not to force the user to repeat their logins too offen.  
+4. **Hardening of the Account Management**    
+This implies employing **strong password policy, frequent password update, no-reuse password, log-out strategies after failed login attempts**. 
 
 ### References 
 
-- []()
+- [Broken Authentication and Session Management](https://www.owasp.org/index.php/Broken_Authentication_and_Session_Management)
+- [The problem with OAuth for Authentication](http://www.thread-safe.com/2012/01/problem-with-oauth-for-authentication.html)  
+
+---
+
+## Cross Site Scripting (XSS)
+
+This attack is based on the attacker providing the victim with some JavaScript which is dubbed **XSS Payload** that once executed.... 
+
+When the link is cliked on **the browser** navigates to the **target web site**. The website that receives the request returns a resource to the browser that has requested it. This is usually described as **the server reflects back to teh user the XSS Payload**. The Browser **executes the XSS Payload which when properly crafted may be able to send back to the attacker the information resident in the user browser such as their session cookies**. At thi spoint the attacker may hold valid authentication cookies for the web site the user was originally directed to which might have been their trusted Bank's website. If the user was loggedin on their Bank's website prior to clicking on the crafted URL with XSS Payloda then the attacker holds a valid authorization cookie fro this user and may be able to impersonate them.
+
+There are many ways in which an attacker may be able to append a XSS Payload to a legitimate URL.
+1. Cafting URI link that have the XSS Payload in the query parameters.
+2. By a successful SQL Injection on the DB of a site so that one or more links on one or more pages of the websites whose URL are dynamically determined permanently contains the XSS Payload.  
+
+### Typical Strategies to perform the attack  
+
+### A Simple Example
+
+```
+http://www.mysite.com/Search?q=Lager
+You searched for <strong>Lager</strong>
+```
+
+```
+http://www.mysite.com/Search?q=<script>alert(document.cookies)</script>
+You searched for <strong><script>alert(document.cookies)</script></strong>
+```
+
+### Typical Remedies  
+
+1. **Always validate untrasted data** by using a **whitelist of trusted values and trusted patterns**.
+2. **Always encode the output** that is prevent anything like `<script>..</script>` to be allowed as part of the HTML document. When any dynamic content is provided to a web page the server must enocode it i.e. `< and >` as `&lth; and &gth;` and the same goes for other special characters so that the browser will print them as characters. This guideline is also know as **never reflect to the browser untrusted data that has come with the request i.e. within its query string and data that comes from the database**. On this last point it must be kept in mind that the database might have already been targeted by SQL injection and contain malicious script content thus it cannot be trusted and the data returned by it must be encoded too before reaching the DOM. 
+3. Use encoding libraries do not try to do the encoding yourself.
+
+### References 
+
+- [XSS Payload List - Cross Site Scripting Vulnerability Payload List](https://www.kitploit.com/2018/05/xss-payload-list-cross-site-scripting.html)
+- [How does CORS prevent XSS?](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss) 
+- [XSS Tutorial #1 - What is Cross Site Scripting?](https://www.youtube.com/watch?v=M_nIIcKTxGk)  
+
+### [Notes](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss) 
+
+CORS is unrelated to XSS because any attacker who can place an evil piece of JavaScript into a website can also set up a server that sends correct CORS headers. CORS cannot prevent malicious JavaScript from sending session ids and permlogin cookies back to the attacker. if a person with malicious intent injects some JavaScript into a page to steal users' cookies and send them to a URL he controls, all he has to do is add the following header on the server side to make the request work.
+
+```
+Access-Control-Allow-Origin: *
+```
+
+The process of forwarding the data **The**
 
 ---
