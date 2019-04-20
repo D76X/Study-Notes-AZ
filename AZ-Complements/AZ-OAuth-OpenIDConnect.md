@@ -10,7 +10,9 @@
 
 - [Which OAuth 2.0 Grant should I use?
 ](https://auth0.com/docs/api-auth/which-oauth-flow-to-use)  
-- [What is the purpose of the 'state' parameter in OAuth authorization request](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request).  
+- [What is the purpose of the 'state' parameter in OAuth authorization request](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request)  
+- [Difference between a querystring and a fragment?](https://stackoverflow.com/questions/1956378/difference-between-a-querystring-and-a-fragment)  
+- [OAuth2: query string vs. fragment](https://stackoverflow.com/questions/14707345/oauth2-query-string-vs-fragment)   
 - [OAuth 2.0 Client Credentials Grant](https://oauth.net/2/grant-types/client-credentials/)  
 - [Authorization Code Grant Flow](https://oauth.net/2/grant-types/authorization-code/)      
 - [OAuth 2.0 Implicit Grant](https://oauth.net/2/grant-types/implicit/)  
@@ -240,6 +242,7 @@ This is also why **this flow is not suitable for application that runs in a brow
 
 ### Request example
 
+#### Simple Request For The Autorization Code Grant Flow
 ```
 https://twitter.example.com/auth
     ?response_type=code  
@@ -253,7 +256,7 @@ The **?response_type=code** is the bit that specifies that the Client Applicatio
 
 The `&state=65976ushdaD` prevents certain attacks. More information on the meaning of this query parameter is available at the following resource - [What is the purpose of the 'state' parameter in OAuth authorization request](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request).
 
-### Response example
+### Simple Response For The Autorization Code Grant Flow
 
 ```
 https://mydomain/..../mycallback.asp
@@ -263,7 +266,7 @@ https://mydomain/..../mycallback.asp
 
 `code=735nnwrj804nm ` is the **Authorization Code** to be exchanged.
 
-### Exchange - Server to Server
+### Simple Request of the Client Server to Exchange the Authorization Token with an Acess Token - Server to Server
 
 ```
 POST /auth
@@ -276,10 +279,10 @@ Host: twitter.example.com
     ?code=735nnwrj804nm     
 ```
 
-`Basic fhf09r4ekls;dk` transmitts the **Ckleint Credentials (Secrets)**
-`?code=735nnwrj804nm` is the **Authorization Code to be exchanged**.
+`Basic fhf09r4ekls;dk` transmitts the **Client Credentials (Secrets)**
+`?code=735nnwrj804nm` is the **Authorization Code to be exchanged for an Access Token**.
 
-### Exchange Response - Server to Server
+### The Exchange Response - Server to Server
 
 ```
 {
@@ -289,6 +292,8 @@ Host: twitter.example.com
     "refresh_token": "768jnfdp842809nmfsl"
 }
 ```
+
+The **Backend Application** can now **securely store the response** for example on the hard drive of the OS or in Azure Key Vault and make use of `access_token` and `refresh_token` **repetedly** that is as long as a refresh token is available to regenerate a new access token.
 
 ---
 
@@ -354,7 +359,19 @@ http://mydomain/mytwittercallback.apsx
  &state=65976ushdaD
 ```
 
-In the response **the most important fact to notice** is the `#` that precedes the `access_token=j48508rfivnt80895fdj`. This is a **big difference** with respect the **Autorization Code Grant Flow**. The `#` defines a `URI fragment` which is **never sent to the server as a Queery Parameter**.  For security, the token response is provided as a hash (#) fragment on the URL. It prevents the token from being passed to the server or to any other servers in referral headers.
+---
+
+## Difference between the Authorization Code Grant Flow & The Implicit Grant Flow
+
+In the response **the most important fact to notice** is the `#` that precedes the `access_token=j48508rfivnt80895fdj`. This is a **big difference** with respect the **Autorization Code Grant Flow**. The `#` defines a `URI fragment` which is **never sent to the server as a Queery Parameter**.  
+
+For security, the token response is provided as a hash (#) fragment on the URL. It prevents the token from being passed to the server or to any other servers in referral headers. 
+
+More about this specific fact can be learned at the following resource.
+
+- [OAuth2: query string vs. fragment](https://stackoverflow.com/questions/14707345/oauth2-query-string-vs-fragment)
+
+Note that  the `#` prevents any redirect. Once the response is back to teh client application (Frontend Application) its code reads the `access_token` and uses it to **access the resourcethe application needs a single time**. This means taht the application will have to obtain a new access token in order access any other resource or the same resorce after a short time (in this case 300 seconds). **Storing the access token on the device or the application memory or the browser will have no use after the access token expires**. This is very different from the way the Authorization Code Grant Flow works.
 
 ---
 
