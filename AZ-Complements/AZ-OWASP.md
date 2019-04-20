@@ -189,8 +189,9 @@ This attack is based on the attacker providing the victim with some JavaScript w
 When the link is cliked **the browser** navigates to the **target web site**. The website that receives the request returns a resource to the browser that has requested it. This is usually described as **the server reflects back to the user the XSS Payload**. The recepient Browser **executes the XSS Payload which when properly crafted may be able to send back to the attacker the information resident in the user's browser such as their session cookies**. At this point the attacker may hold valid authentication cookies for the web site the user was originally directed to which might have been their trusted Bank's website. If the user was logged in on their Bank's website prior to clicking on the crafted URL with XSS Payload then the attacker holds a valid authorization cookie for this user and may be able to impersonate them.
 
 There are many ways in which an attacker may be able to append a XSS Payload to a legitimate URL.
-1. Cafting URI link that have the XSS Payload in the query parameters.
-2. By a successful SQL Injection on the DB of a site so that one or more links on one or more pages of the websites whose URL are dynamically determined permanently contains the XSS Payload.  
+
+1. Crafting URI links that have the **XSS Payload in the query parameters**.
+2. **By a successful SQL Injection on the DB of a site** so that one or more links on one or more pages of the websites whose URL are dynamically produced permanently contains the XSS Payload.  
 
 ### Typical Strategies to perform the attack  
 
@@ -219,14 +220,55 @@ You searched for <strong><script>alert(document.cookies)</script></strong>
 - [XSS Tutorial #1 - What is Cross Site Scripting?](https://www.youtube.com/watch?v=M_nIIcKTxGk)  
 - [Same origin Policy and CORS (Cross-origin resource sharing)](https://stackoverflow.com/questions/14681292/same-origin-policy-and-cors-cross-origin-resource-sharing)
 
---- 
-
 ---
 
-## Cross Site Scripting (XSS)
+## Cross SiteRequest Forgery (CSRF)
 
 ### Typical Strategies to perform the attack  
 
-### Typical Remedies 
+### Typical Remedies
+
+### References 
+
+
+---
+
+## Insecure Direct Object References
+
+### Typical Strategies to perform the attack  
+
+### Typical Remedies
+
+### References 
+
+---
+
+## Security Misconfiguration
+
+### Typical Strategies to perform the attack  
+
+### Typical Remedies
+
+### References 
+
+---
+
+## Sensitive Data Exposure
+
+### Typical Strategies to perform the attack  
+
+### Typical Remedies
+
+### References 
+
+---
+
+## Missinf Functional Level Access Control
+
+### Typical Strategies to perform the attack  
+
+### Typical Remedies
+
+### References 
 
 ---
