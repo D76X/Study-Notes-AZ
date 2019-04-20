@@ -110,45 +110,6 @@ This implies employing **strong password policy, frequent password update, no-re
 
 ---
 
-## Cross Site Scripting (XSS)
-
-This attack is based on the attacker providing the victim with some JavaScript which is dubbed **XSS Payload** that once executed.... 
-
-When the link is cliked on **the browser** navigates to the **target web site**. The website that receives the request returns a resource to the browser that has requested it. This is usually described as **the server reflects back to teh user the XSS Payload**. The Browser **executes the XSS Payload which when properly crafted may be able to send back to the attacker the information resident in the user browser such as their session cookies**. At thi spoint the attacker may hold valid authentication cookies for the web site the user was originally directed to which might have been their trusted Bank's website. If the user was loggedin on their Bank's website prior to clicking on the crafted URL with XSS Payloda then the attacker holds a valid authorization cookie fro this user and may be able to impersonate them.
-
-There are many ways in which an attacker may be able to append a XSS Payload to a legitimate URL.
-1. Cafting URI link that have the XSS Payload in the query parameters.
-2. By a successful SQL Injection on the DB of a site so that one or more links on one or more pages of the websites whose URL are dynamically determined permanently contains the XSS Payload.  
-
-### Typical Strategies to perform the attack  
-
-### A Simple Example
-
-```
-http://www.mysite.com/Search?q=Lager
-You searched for <strong>Lager</strong>
-```
-
-```
-http://www.mysite.com/Search?q=<script>alert(document.cookies)</script>
-You searched for <strong><script>alert(document.cookies)</script></strong>
-```
-
-### Typical Remedies  
-
-1. **Always validate untrasted data** by using a **whitelist of trusted values and trusted patterns**.
-2. **Always encode the output** that is prevent anything like `<script>..</script>` to be allowed as part of the HTML document. When any dynamic content is provided to a web page the server must enocode it i.e. `< and >` as `&lth; and &gth;` and the same goes for other special characters so that the browser will print them as characters. This guideline is also know as **never reflect to the browser untrusted data that has come with the request i.e. within its query string and data that comes from the database**. On this last point it must be kept in mind that the database might have already been targeted by SQL injection and contain malicious script content thus it cannot be trusted and the data returned by it must be encoded too before reaching the DOM. 
-3. Use encoding libraries do not try to do the encoding yourself.
-
-### References 
-
-- [XSS Payload List - Cross Site Scripting Vulnerability Payload List](https://www.kitploit.com/2018/05/xss-payload-list-cross-site-scripting.html)
-- [How does CORS prevent XSS?](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss) 
-- [XSS Tutorial #1 - What is Cross Site Scripting?](https://www.youtube.com/watch?v=M_nIIcKTxGk)  
-- [Same origin Policy and CORS (Cross-origin resource sharing)](https://stackoverflow.com/questions/14681292/same-origin-policy-and-cors-cross-origin-resource-sharing)
-
---- 
-
 ## [Important Security Concepts](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss) 
 
 ### [Single Origine Policy (SOP)](https://en.wikipedia.org/wiki/Same-origin_policy)  
@@ -220,6 +181,46 @@ Access-Control-Allow-Methods: PUT, DELETE
 ```
 Access-Control-Allow-Origin: *
 ```
+---
+## Cross Site Scripting (XSS)
+
+This attack is based on the attacker providing the victim with some JavaScript which is dubbed **XSS Payload**. For example a link on a web page may have a URL with a XSS Payload.  
+
+When the link is cliked **the browser** navigates to the **target web site**. The website that receives the request returns a resource to the browser that has requested it. This is usually described as **the server reflects back to the user the XSS Payload**. The recepient Browser **executes the XSS Payload which when properly crafted may be able to send back to the attacker the information resident in the user's browser such as their session cookies**. At this point the attacker may hold valid authentication cookies for the web site the user was originally directed to which might have been their trusted Bank's website. If the user was logged in on their Bank's website prior to clicking on the crafted URL with XSS Payload then the attacker holds a valid authorization cookie for this user and may be able to impersonate them.
+
+There are many ways in which an attacker may be able to append a XSS Payload to a legitimate URL.
+1. Cafting URI link that have the XSS Payload in the query parameters.
+2. By a successful SQL Injection on the DB of a site so that one or more links on one or more pages of the websites whose URL are dynamically determined permanently contains the XSS Payload.  
+
+### Typical Strategies to perform the attack  
+
+### A Simple Example
+
+```
+http://www.mysite.com/Search?q=Lager
+You searched for <strong>Lager</strong>
+```
+
+```
+http://www.mysite.com/Search?q=<script>alert(document.cookies)</script>
+You searched for <strong><script>alert(document.cookies)</script></strong>
+```
+
+### Typical Remedies  
+
+1. **Always validate untrasted data** by using a **whitelist of trusted values and trusted patterns**.
+2. **Always encode the output** that is prevent anything like `<script>..</script>` to be allowed as part of the HTML document. When any dynamic content is provided to a web page the server must enocode it i.e. `< and >` as `&lth; and &gth;` and the same goes for other special characters so that the browser will print them as characters. This guideline is also know as **never reflect to the browser untrusted data that has come with the request i.e. within its query string and data that comes from the database**. On this last point it must be kept in mind that the database might have already been targeted by SQL injection and contain malicious script content thus it cannot be trusted and the data returned by it must be encoded too before reaching the DOM. 
+3. Use encoding libraries do not try to do the encoding yourself.
+
+### References 
+
+- [XSS Payload List - Cross Site Scripting Vulnerability Payload List](https://www.kitploit.com/2018/05/xss-payload-list-cross-site-scripting.html)
+- [How does CORS prevent XSS?](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss) 
+- [XSS Tutorial #1 - What is Cross Site Scripting?](https://www.youtube.com/watch?v=M_nIIcKTxGk)  
+- [Same origin Policy and CORS (Cross-origin resource sharing)](https://stackoverflow.com/questions/14681292/same-origin-policy-and-cors-cross-origin-resource-sharing)
+
+--- 
+
 ---
 
 ## Cross Site Scripting (XSS)
