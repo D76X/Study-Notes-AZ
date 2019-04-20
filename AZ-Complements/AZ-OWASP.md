@@ -21,6 +21,8 @@
 - [XSS Payload List - Cross Site Scripting Vulnerability Payload List](https://www.kitploit.com/2018/05/xss-payload-list-cross-site-scripting.html)  
 - [XSS Tutorial #1 - What is Cross Site Scripting?](https://www.youtube.com/watch?v=M_nIIcKTxGk)  
 - [How does CORS prevent XSS?](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss)  
+- [Same origin Policy and CORS (Cross-origin resource sharing)](https://stackoverflow.com/questions/14681292/same-origin-policy-and-cors-cross-origin-resource-sharing)  
+- [Single Origine Policy (SOP)](https://en.wikipedia.org/wiki/Same-origin_policy) 
 
 
 ## Complementary Resources
@@ -143,15 +145,87 @@ You searched for <strong><script>alert(document.cookies)</script></strong>
 - [XSS Payload List - Cross Site Scripting Vulnerability Payload List](https://www.kitploit.com/2018/05/xss-payload-list-cross-site-scripting.html)
 - [How does CORS prevent XSS?](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss) 
 - [XSS Tutorial #1 - What is Cross Site Scripting?](https://www.youtube.com/watch?v=M_nIIcKTxGk)  
+- [Same origin Policy and CORS (Cross-origin resource sharing)](https://stackoverflow.com/questions/14681292/same-origin-policy-and-cors-cross-origin-resource-sharing)
 
-### [Notes](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss) 
+--- 
 
-CORS is unrelated to XSS because any attacker who can place an evil piece of JavaScript into a website can also set up a server that sends correct CORS headers. CORS cannot prevent malicious JavaScript from sending session ids and permlogin cookies back to the attacker. if a person with malicious intent injects some JavaScript into a page to steal users' cookies and send them to a URL he controls, all he has to do is add the following header on the server side to make the request work.
+## [Important Security Concepts](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss) 
+
+### [Single Origine Policy (SOP)](https://en.wikipedia.org/wiki/Same-origin_policy)  
+
+**Single Origine Policy (SOP) aka the same-origin policy** is a security mechanism **implemented in Web Browsers**. The policy permits scripts contained in a web page to access data only if obtained from the same **origin** the web page comes from. **An origin is defined as a combination of URI scheme, host name, and port number**. **This policy prevents a malicious script on one page from obtaining access to sensitive data on another web page**. 
+
+It is very important to remember that the **same-origin policy applies only to scripts**. This means that resources such as **images, CSS, and dynamically-loaded scripts**, can be accessed across origins via the corresponding HTML tags.
+
+### Security Applications of SOP
+
+**The same-origin policy helps protect sites that use authenticated sessions**. The following example illustrates a potential security risk that could arise without the same-origin policy. Assume that a user is visiting a banking website and doesn't log out. Then, the user goes to another site that has some malicious JavaScript code running in the background that requests data from the banking site. Because the user is still logged in on the banking site, the malicious code could do anything the user could do on the banking site. For example, it could get a list of the user's last transactions, create a new transaction, etc. This is because the browser can send and receive session cookies to the banking site based on the domain of the banking site. **The user visiting the malicious site would expect that the site he or she is visiting has no access to the banking session cookie. While it is true that the JavaScript has no direct access to the banking session cookie, it could still send and receive requests to the banking site with the banking site's session cookie. The script can essentially do the same as the user would**. 
+
+However, when the browser implements SOP then any script may still use the authentication cookies for another origin to query for data however....
+
+---
+
+## [Cross Origin Resource Sharing (CORS) - Relaxing the same-origin policy](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) 
+
+In some circumstances, the same-origin policy is too restrictive, posing problems for large websites that use multiple subdomains. Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources on a web page to be requested from another domain outside the domain from which the first resource was served. A web page may freely embed cross-origin images, stylesheets, scripts, iframes, and videos.  Certain "cross-domain" requests, notably Ajax requests, are forbidden by default by the same-origin security policy.
+
+**CORS defines a way in which a browser and server can interact to determine whether or not it is safe to allow the cross-origin request**.
+
+The CORS standard describes new **HTTP headers** which **provide browsers a way to request remote URLs** only when they have permission. **Although some validation and authorization can be performed by the server, it is generally the browser's responsibility to support these headers and honor the restrictions they impose**.  
+
+### [Request Preflight Specification](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)  
+
+**For Ajax and HTTP request methods that can modify data** (usually HTTP methods **other than** GET, or for POST usage with certain MIME types), **the specification mandates** that browsers **preflight the request**, soliciting supported methods from the server with an **HTTP OPTIONS request** method, and then, upon **approval from the server**, sending the **actual request** with the actual HTTP request method. Servers can also notify clients whether credentials (including Cookies and HTTP Authentication data) should be sent with requests.
+
+### [Simple example of CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)  
+
+Suppose a user visits http://www.example.com and the page attempts a cross-origin request to fetch the user's data from http://service.example.com. A CORS-compatible browser will attempt to make a cross-origin request to service.example.com as follows.
+
+1. The browser sends the OPTIONS request with an Origin HTTP header to service.example.com containing the domain that served the parent page:
+
+```
+Origin: http://www.example.com
+```
+
+2. The server at service.example.com may respond with
+
+```
+Access-Control-Allow-Origin: http://www.example.com
+```
+
+3. Since www.example.com matches the parent page, the browser then performs the cross-origin request. Otherwise it shows a error page if the server does not allow a cross-origin request.
+
+### [Simple Example of Preflight Request](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)   
+
+When performing certain types of **cross-domain Ajax requests i.e. HTTP request methods that can modify data**, modern browsers that support CORS will insert an extra "preflight" request to determine whether they have permission to perform the action.
+
+```
+OPTIONS /
+Host: service.example.com
+Origin: http://www.example.com
+```
+
+If service.example.com is willing to accept the action, it may respond with the following headers
+
+```
+Access-Control-Allow-Origin: http://www.example.com
+Access-Control-Allow-Methods: PUT, DELETE
+```
+---
+
+### CORS and XSS
+
+**[CORS is unrelated to XSS](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss)** because any attacker who can place an evil piece of JavaScript into a website can also set up a server that sends correct CORS headers. **CORS cannot prevent malicious JavaScript from sending session ids and permlogin cookies back to the attacker's domain**. if a person with malicious intent injects some JavaScript into a page to steal users' cookies and send them to a URL **he controls**, all he has to do is add the following header on the server side to make the request work.
 
 ```
 Access-Control-Allow-Origin: *
 ```
+---
 
-The process of forwarding the data **The**
+## Cross Site Scripting (XSS)
+
+### Typical Strategies to perform the attack  
+
+### Typical Remedies 
 
 ---
