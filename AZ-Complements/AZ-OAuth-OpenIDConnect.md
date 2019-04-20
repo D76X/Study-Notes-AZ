@@ -8,7 +8,13 @@
 
 ## Complementary Resources
 
-- [What is the purpose of the 'state' parameter in OAuth authorization request](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request).
+- [Which OAuth 2.0 Grant should I use?
+](https://auth0.com/docs/api-auth/which-oauth-flow-to-use)  
+- [What is the purpose of the 'state' parameter in OAuth authorization request](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request).  
+- [OAuth 2.0 Client Credentials Grant](https://oauth.net/2/grant-types/client-credentials/)  
+- [Authorization Code Grant Flow](https://oauth.net/2/grant-types/authorization-code/)      
+- [OAuth 2.0 Implicit Grant](https://oauth.net/2/grant-types/implicit/)  
+- [How to implement the Implicit Grant](https://auth0.com/docs/api-auth/tutorials/implicit-grant)    
 
 ---
 
@@ -45,14 +51,14 @@ A Frontend Application is any application which **cannot** guarantee a way to st
     - Access Token obtained using the client credential
     - Typically the backend application here needs only read-only access to public resources on some authoritation server that is information that is publiccly available which may or may not be related to some users but that are anyway publicly available anyway
 
-2. Autorization Code Grant Flow
+2. [Authorization Code Grant Flow](https://oauth.net/2/grant-types/authorization-code/)  
     - User **Delegates access** to resources on thrird-party RSs but owned by them to a **Native Application**
     - **Access Token and Refresh Token obtained by exchanging** an **Authorization Token** 
     - **Refresh Token** can be used with **Client Credentials** to obtain a new **Access Token**
     - Can only be used with **Native Apps** where the **Client Application Secrets** can be stored securely and that have the right to open the browser on the user's system.  Notice tha a **AppService** which is a **backend application** counts as a **Native Application** as it has a way to securely store Client Secrets. 
     - This flow is typically used to delegate access to user-specifi, user-reserved information as read-only resources or to even delegate write access to user owned resources
 
-3. Implicit Grant Flow
+3. [OAuth 2.0 Implicit Grant](https://oauth.net/2/grant-types/implicit/) 
     - **Delegated Access** to a **frontend application**
     - **Access Token directly obtained through redirection**
     - It **does not** have or need a **refresh token**
@@ -323,6 +329,8 @@ A SPA running in a web browser can in principle provide the same functionality a
 
 ---
 
+#### Request for an Access Token in the Implicit Grant Flow
+
 ```
 https://twitter.example.com/auth
     ?response_type=token  
@@ -332,10 +340,21 @@ https://twitter.example.com/auth
     &state=65976ushdaD
 ```
 
-The **?response_type=token** is the bit that specifies that the Client Application wants to enage in this flow (). 
+The **?response_type=token** is the bit that specifies that the Client Application wants to enage in this flow **(Implicit Grant Flow)**. 
 
 The `&state=65976ushdaD` prevents certain attacks. More information on the meaning of this query parameter is available at the following resource - [What is the purpose of the 'state' parameter in OAuth authorization request](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request).
 
+#### Response with an Access Token in the Implicit Grant Flow
+
+```
+http://mydomain/mytwittercallback.apsx
+ #access_token=j48508rfivnt80895fdj
+ &token_type=bearer
+ &expires_in=300
+ &state=65976ushdaD
+```
+
+In the response **the most important fact to notice** is the `#` that precedes the `access_token=j48508rfivnt80895fdj`. This is a **big difference** with respect the **Autorization Code Grant Flow**. The `#` defines a `URI fragment` which is **never sent to the server as a Queery Parameter**.  For security, the token response is provided as a hash (#) fragment on the URL. It prevents the token from being passed to the server or to any other servers in referral headers.
 
 ---
 
