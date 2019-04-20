@@ -27,7 +27,8 @@
 
 ## Complementary Resources
 
-- [LulzSec](https://en.wikipedia.org/wiki/LulzSec)
+- [LulzSec](https://en.wikipedia.org/wiki/LulzSec)  
+- [How millions of DSL modems were hacked in Brazil, to pay for Rio prostitutes - XSRF](https://nakedsecurity.sophos.com/2012/10/01/hacked-routers-brazil-vb2012/)  
 
 ---
 
@@ -232,7 +233,9 @@ You searched for <strong><script>alert(document.cookies)</script></strong>
 
 - [What is the purpose of the 'state' parameter in OAuth authorization request?](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request)
 
-- [Create an anti-forgery state token - the state query parameter](https://developers.google.com/identity/protocols/OpenIDConnect?hl=fr#createxsrftoken)
+- [Create an anti-forgery state token - the state query parameter](https://developers.google.com/identity/protocols/OpenIDConnect?hl=fr#createxsrftoken)  
+
+- [How millions of DSL modems were hacked in Brazil, to pay for Rio prostitutes - XSRF](https://nakedsecurity.sophos.com/2012/10/01/hacked-routers-brazil-vb2012/)  
 
 ---
 
