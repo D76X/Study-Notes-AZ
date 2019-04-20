@@ -294,12 +294,14 @@ In scenario 2 it could be relied on the fact that the client application secrets
 - A iOS app
 - An AppService which hosts a stateless ASP.Net Core site
 
-However, think of the scenario in which the application runs as a SPA in the user's browser. **The user's browser is not a safe place to store the client application credentials** thus **the Autorization Code Grant Flow cannot be employed**. Stll we would like the user of this app to be able for example tio post tweets to their tweet account directly from this SPA which means that the user needs some means to delegate the authorization to write tweets to their accounts to teh application. 
+However, think of the scenario in which the application runs as a SPA in the user's browser. **The user's browser is not a safe place to store the client application credentials** thus **the Autorization Code Grant Flow cannot be employed**. Still we would like the user of this app to be able for example to post tweets to their tweet account directly from this SPA which means that the user needs some means to **delegate** the authorization to write tweets to their accounts to the application **without the need to hold client secrets in the app,the browser or the device**. 
+
+A SPA running in a web browser can in principle provide the same functionality as those available to users of a web site. However, while user of a web site use the backend code running on the server to access third-party resources which are then sent back to the user's browser by the server (Autorization Code Grant Flow) in the case of the API there is no such server and the communication is carried out directly by the client code in teh browser with the servers and APIs olding the resources the application needs to interact with.
 
 ### Implicit Grant Flow
     
 - **Delegated Access** to a **frontend application** 
-- **Access Token directly obtained through redirection**
+- **Access Token directly obtained through redirection** that is there is no exchange of client secrets for an access token
 - It **does not** have or need a **refresh token**
 
 #### The nodes
