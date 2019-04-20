@@ -8,7 +8,7 @@
 
 ## Complementary Resources
 
-- [Buffer - Save time managing social media for your business](https://buffer.com/)
+- [What is the purpose of the 'state' parameter in OAuth authorization request](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request).
 
 ---
 
@@ -243,9 +243,9 @@ https://twitter.example.com/auth
     &state=65976ushdaD
 ```
 
-The **?response_type=code** is the bit that specify that the Client Application wants to enage in this flow. 
+The **?response_type=code** is the bit that specifies that the Client Application wants to enage in this flow **(Autorization Code Grant Flow )**. 
 
-The `&state=65976ushdaD` prevents certain attacks...
+The `&state=65976ushdaD` prevents certain attacks. More information on the meaning of this query parameter is available at the following resource - [What is the purpose of the 'state' parameter in OAuth authorization request](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request).
 
 ### Response example
 
@@ -320,6 +320,22 @@ A SPA running in a web browser can in principle provide the same functionality a
 5. The AS **redirects the browser to the application redirect URI that was registered with it and in the redirect URI it provides the Access Token directly** that is **there is no Authorization Token to echange as in the Autorization Code Grant Flow** 
 6. The client can now use the **Acess Token** to access the resource on the Resource Server
 7. The Resource Token returns the resource if requested
+
+---
+
+```
+https://twitter.example.com/auth
+    ?response_type=token  
+    &client_id=MyCrazuApp  
+    &scope=read write  
+    &redirect_uri=https://mydomain/..../mycallback.asp
+    &state=65976ushdaD
+```
+
+The **?response_type=token** is the bit that specifies that the Client Application wants to enage in this flow (). 
+
+The `&state=65976ushdaD` prevents certain attacks. More information on the meaning of this query parameter is available at the following resource - [What is the purpose of the 'state' parameter in OAuth authorization request](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request).
+
 
 ---
 

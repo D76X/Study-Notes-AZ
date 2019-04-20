@@ -230,6 +230,9 @@ You searched for <strong><script>alert(document.cookies)</script></strong>
 
 ### References 
 
+- [What is the purpose of the 'state' parameter in OAuth authorization request?](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request)
+
+- [Create an anti-forgery state token - the state query parameter](https://developers.google.com/identity/protocols/OpenIDConnect?hl=fr#createxsrftoken)
 
 ---
 
