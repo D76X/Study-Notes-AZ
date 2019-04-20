@@ -51,7 +51,7 @@ How serious the consequences of a successful attack may be for the buisness, sys
 | (SQL) Injection | Exploitability Easy  | Prevalence Common - Detectability Average  | Severe           |
 | Impersonation   | Exploitability Avg.  | Widespread - Average                       | Severe           |
 | XSS             | Exploitability Avg.  | Very Widespread - Easy                     | Moderate         |
-||||
+| XSRF/CSRF       | Exploitability Avg.  | Common - Easy                              | Moderate         |
 ||||
 
 ---
@@ -222,7 +222,7 @@ You searched for <strong><script>alert(document.cookies)</script></strong>
 
 ---
 
-## Cross SiteRequest Forgery (CSRF)
+## Cross SiteRequest Forgery (CSRF/XSRF)
 
 ### Typical Strategies to perform the attack  
 

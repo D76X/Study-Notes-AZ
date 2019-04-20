@@ -24,13 +24,21 @@
 
 ### Main Subjects
 
-The following discusses the **three main authorization and authentication flows and their uses cases**.
+The following discusses the **three main authorization and authentication flows and their uses cases**. In order to fully understand the corresponding user cases it is neccessary to define the conncepts of Backend Application and  Frontend Application as the types of flow that can be employed to Authenticate and/or Authorize a user, application or device depends on this attributes.
+
+#### Backend Application
+
+A Backend Application is any application which can guarantee a way to store secrets securely. For example, the server-side code that runs an a server is a backend application as the OS that hosts the application provides ways to safely store cryptographic secrets, the same goes for a WPF application on a user Windows OS PC. Likewise he case of an application in the clould i.e. an AppService on Microsoft Azure or aother cloud infrastructure which can use means such as Azure Key Vault to safely store cryptographic secrets.
+
+#### Frontend Application
+
+A Frontend Application is any application which **cannot** guarantee a way to store secrets securely. For example, applications such SPA running i a browser or application on mobile devices do not have a way to to safely store cryptographic secrets on the device or the browser. 
 
 ---
 #### Summary  
 
 1. Client Credential Grant Flow
-    - The client is a backend system that is some code on a server!
+    - The client is a backend system that is some code on a server
     - The **is no access delegation in this specific flow** it is just **machine to machine communication** 
     - There is **no user involvement in this flow** everything happens in name of the client application
     - Direct Access by the client application
@@ -168,7 +176,7 @@ This is the easiest of the OAuth Flows
 
 ---
 
-### Scenario 2 - Native App (Backend App) on bahalf of the user
+### Scenario 2 - Native App (Backend App) on behalf of the user
 
 In this scenario an application offers a feature such that the user of the application can schedule tweets to be posted on his tweeter account with a selected schedule. In this case the user must delegate access to his or her tweeter profile to the application. In this case there **must be a way for the ... of asking the user to authorize the application to post tweets on their account**. 
 
@@ -278,7 +286,7 @@ Host: twitter.example.com
 
 ---
 
-### Scenario 3 - Frontend App (i.e JavaScript or SPA) on bahalf of the user
+### Scenario 3 - Frontend App (i.e JavaScript or SPA) on behalf of the user
 
 In scenario 2 it could be relied on the fact that the client application secrets can be stored safely on a backend for example
 
