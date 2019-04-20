@@ -317,9 +317,9 @@ A SPA running in a web browser can in principle provide the same functionality a
 2. The AS redirects the user browser to the authentication page of fro the resource the SPA wants to gain access to
 3. The user authenticates on the **Authorization Server** i.e. the Tweeter Authorization Server or Azure AD in an enterprise
 4. The AS asks the user whether they want to **delegate access to the protected resources to the client application that is the SPA**
-5. The AS **redirects the browser to the application redirect URI that was registered with it and in the redirect URI it provides the Access Token directly** that is **there is no Authorization Token to echange as in the previous flow!** 
-6. The client can now use the **Acess Token** to access the resource on teh Resource Server
-7. The Resource Token retunrs the resource if requested
+5. The AS **redirects the browser to the application redirect URI that was registered with it and in the redirect URI it provides the Access Token directly** that is **there is no Authorization Token to echange as in the Autorization Code Grant Flow** 
+6. The client can now use the **Acess Token** to access the resource on the Resource Server
+7. The Resource Token returns the resource if requested
 
 ---
 
