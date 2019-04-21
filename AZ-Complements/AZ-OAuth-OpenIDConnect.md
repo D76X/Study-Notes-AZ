@@ -4,6 +4,8 @@
 
 1. [GOTO 2018 • Introduction to OAuth 2.0 and OpenID Connect • Philippe De Ryck](https://www.youtube.com/watch?v=GyCL8AJUhww)  
 
+2. [OAuth 2.0 OAuth 2.0: An Overview](https://www.youtube.com/watch?v=CPbvxxslDTU)  
+
 ## Realted Resources
 
 ## Complementary Resources
@@ -16,7 +18,11 @@
 - [OAuth 2.0 Client Credentials Grant](https://oauth.net/2/grant-types/client-credentials/)  
 - [Authorization Code Grant Flow](https://oauth.net/2/grant-types/authorization-code/)      
 - [OAuth 2.0 Implicit Grant](https://oauth.net/2/grant-types/implicit/)  
-- [How to implement the Implicit Grant](https://auth0.com/docs/api-auth/tutorials/implicit-grant)    
+- [How to implement the Implicit Grant](https://auth0.com/docs/api-auth/tutorials/implicit-grant) 
+- [OAuth 2.0: An Overview](https://www.youtube.com/watch?v=CPbvxxslDTU)
+- [What is OAuth2? How does OAuth2 work? | Tech Primers](https://www.youtube.com/watch?v=bzGKgC3N7SY)  
+- [OpenID Connect FAQ and Q&As](https://openid.net/connect/faq/) 
+- [An Introduction To OpenID Connect](https://www.youtube.com/watch?v=6DxRTJN1Ffo)  
 
 ---
 
@@ -373,6 +379,157 @@ More about this specific fact can be learned at the following resource.
 
 Note that  the `#` prevents any redirect. Once the response is back to teh client application (Frontend Application) its code reads the `access_token` and uses it to **access the resourcethe application needs a single time**. This means taht the application will have to obtain a new access token in order access any other resource or the same resorce after a short time (in this case 300 seconds). **Storing the access token on the device or the application memory or the browser will have no use after the access token expires**. This is very different from the way the Authorization Code Grant Flow works.
 
+---
+
+### [OAuth 2.0: An Overview](https://www.youtube.com/watch?v=CPbvxxslDTU)  
+
+Modern WebApi almost always employ the authentication scheme OAuth 2.0. OAuth is an **open standard (protocol)** that has been designed to achieve two goals.
+
+1. Authentication
+2. Acess Delegation
+
+It is useful to visit the following resources to brush up on what OAuth 2.0 is and how its workflow works and its most common user cases.
+
+- [OAuth 2.0: An Overview](https://www.youtube.com/watch?v=CPbvxxslDTU)
+- [What is OAuth2? How does OAuth2 work? | Tech Primers](https://www.youtube.com/watch?v=bzGKgC3N7SY)  
+- [OpenID Connect FAQ and Q&As](https://openid.net/connect/faq/) 
+- [An Introduction To OpenID Connect](https://www.youtube.com/watch?v=6DxRTJN1Ffo)  
+
+
+#### The Roles in OAuth 2.0 open protocol
+
+- User
+- Application i.e. Spotify, a Banking App, etc.
+- The Api i.e. Facebook, Twitter, Google, or a proprietary Api etc.
+
+The **Api** is further split into the following
+
+- Authentication Server
+- Resource Server
+
+#### The OAuth 2.0 Workflows
+
+OAuth 2 really encompasses two parts
+
+1. Authorization
+2. Authentication - this is [**OpenID Connect**]((https://openid.net/connect/faq/))
+  
+---
+
+### The threE parts of OAuth 2 
+
+1. Registration 
+2. Authentication 
+3. Authorization.
+
+
+
+---
+
+#### Part1 - Registration of the Application wih the Api (Authorization Server)
+
+In the following the **OAuth 2 authorization workflow** is detailed. However, in order for it to work the **application** must first be registered with the **Authorization Server**. 
+
+The **Application** must provide the **Authorization Server** with the following details.
+
+- The name of the application.
+- The URL (domain) of the web site of the application.
+- The URL to which the user will be redirected to after the user leaves the **Authorization Screen**. The **Authorization Server** sends the access token and the URL of the Api for which the client app has requested access to this registered URL over SSL. The URL of the Web Api is a domain served by a **Resource Server**.
+
+After the **registration of the backend application with the Authorization Server** is performed the **Autorization Server** produces the following.
+
+1. The **CliendID** for the registred application to **uniquely** indentify the backend application with the **Authorization Server**.
+This value must be presented by client applications that issue requests to the Authorization Server for access tokens to the WebApi/Backennd application.
+
+2. The **Client Secret** that is **private identifier/secret** shared by the client application and the Api. A client secret is used in some OAuth flows but not all. In the flows where it is used the secret is sent to the client application over SSL to a registered URL as a redirect and the client application must use it to **authenticate** again to the **Authorization Server** in order to request an **Acess Token**. This mechanism is normally described as the **exchange of an authorization token for a an access token**.
+Not all OAuth flows employ this mechanism.
+
+---
+
+## OAuth Grant Types
+
+1. Authorization Code Grant Type
+2. Implicint Grant
+3. Password Grant
+4. Client Credential Grant
+
+---
+
+### Authorization Code Grant
+
+The **Authorization Code Grant** is the grant returned to an application that runs on a web server or any do-called backend application that can be consideredsecure and able to securely store secrets. In this case it is the web server where the application runs that issues an **authorization request** to the **Authorization Server**.
+
+---
+
+### Implicit Grant
+
+The **Implicit Grant** is the grant that is retuned to an application that runs in a web browser for example a SPA that calls a WebApi on some backend.
+
+---
+
+### Password Grant
+
+---
+
+### Client Credential Grant
+
+---
+
+#### The OAuth 2.0 Authorization Workflow
+
+1. The **User** tries to access a resource provided by the 
+**application** which requires some interaction with the **resource server** for example the user wishes to retrieve personal information related to their account details. In order to accomplish this the application is designed to issue calls against a backend Api.
+
+2. The **application** first issues a request to the **Authorization Server** and the **Authorization Server** responds to this request with a redirect to a **HTTP page**. If the user is not yet authenticated with the Authorization Server then th first redirect is to teh authentication page in which users can provide theior credential to authenticate. Then **a second redirect is to (the Authorization Screen)** that shows to the **User** a dialog where they are notified that the **Application** requires **authorization** to be allowed to access the reources it needs from the **Resource Server(s)**. It may also show a list of the resources that the application needs to access like in the simple example below.
+
+```
+Do you whish to authorize the App : My Banking Co
+to acess : 
+Your account info 
+Your transaction history
+Your Personal Info
+?
+Yes - No
+```
+
+3. The **User** might **deny or grant permission**  to the **application** to **access** the required information from the **Resource Server(s)**. This is called **delegation** because the Authorization Server asks the user to grant the application the permission to access resources owned by the user that is teh application access these resources on behalf of teh user.
+
+4. If the **User** allows the application to access the reources then the **Authorization Server** issues an **Authorization Grant** and **Authorization Token** to the **Application** and add them in its response to its initial request (over SSL in a rederict to a registered URL).
+
+5. The **Application** retrieves the **Authorization Grant & Token (Client Secret+Authorization Token)** and presents them again to the **Authorization Server** in a new request in which the client application asks the **Authentication Server** to **Authorize the application to access resources on the Resource Server(s)**.
+
+6. As the **Authentication Server** receives the requests from the **Application** to **authorize** it to the **Resource Server** the **Authentication Server** reads the **Grant & Token (Client Secret+Authorization Token)** from the reuest and produces a **Access Token (this is called tokens exchanged)** for the **resources that the application needs to access on the Resource Server**. It returns this **Acess Token** to the caller in its response over SSL and in a redirect.In OAuth 2.0 the access token includes the **Acess Token itself and a Refresh Token**.
+
+7. The **Application** now sends the request to the **Resource Server** with the **Acess Token**. 
+
+8. The **Resource Server** validates the **Access Token** against the **Authorization Server** and returns the **protected resources** that have been requested by teh application to the **application** in its response.
+
+---
+
+#### [Acess Delegation](https://www.youtube.com/watch?v=bzGKgC3N7SY) 
+**Acess Delegation** is the mechanism by which a party on the Internet i.e. a WebApi or website **delegates to an external authorization party** the resposibility of producing the claims for a caller. 
+
+The typical scenario is that of a web application which provides services to their users. However, rather than holding user credentials the site allows its users to make use of the accounts they already have with other authorities such as Google or Facebook. 
+
+Therefore, when users try to make use of **the web application this will ask the user whether they wish to**
+
+ their account on the web site OAuth delegates the authentication to Google or Facebook which return teh claim the user has for the web site they are trying to access. The web site does no longer hold any authentication data related to teh user thus its free from thsi responsibility. 
+
+ The autherntication scheme OAuth 2.0 improves upon the authentication scheme OAuth 1.0 in that it defines **two authentication tokens**.
+
+- Access Token
+- Refresh Token
+
+| Access Token              | Refresh Token            |
+| ------------------------- | ------------------------ |
+| goes in the request header| used to get a new access token |
+| it is short lived         | it isi long lived        |
+|||
+|||
+
+An access token is included in the header of any request to a WebApi which demands the caller to be authenticated in order to access the resources it exposes. However, the access token is a liability as if stolen it grants access to a potential attacker. Therefore, traditionally access token have a short expiration to limit teh likelyhodd to be exploited by malicious callers were they stolen i.e. expiration that range from few minutes to an hour are common.
+
+Howver, when the access token expires the caller is forced to re-authenticate which might not be practical for the user 
 ---
 
 
