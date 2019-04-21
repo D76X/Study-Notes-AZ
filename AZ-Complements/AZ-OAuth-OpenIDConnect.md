@@ -4,6 +4,8 @@
 
 1. [GOTO 2018 • Introduction to OAuth 2.0 and OpenID Connect • Philippe De Ryck](https://www.youtube.com/watch?v=GyCL8AJUhww)  
 
+2. [Introduction to OAuth2, OpenID Connect and JSON Web Tokens (JWT)](https://app.pluralsight.com/library/courses/oauth2-json-web-tokens-openid-connect-introduction/table-of-contents)    
+
 2. [OAuth 2.0 OAuth 2.0: An Overview](https://www.youtube.com/watch?v=CPbvxxslDTU)  
 
 ## Realted Resources
@@ -416,13 +418,11 @@ OAuth 2 really encompasses two parts
   
 ---
 
-### The threE parts of OAuth 2 
+### The three parts of OAuth 2 
 
 1. Registration 
 2. Authentication 
 3. Authorization.
-
-
 
 ---
 
@@ -529,7 +529,8 @@ Therefore, when users try to make use of **the web application this will ask the
 
 An access token is included in the header of any request to a WebApi which demands the caller to be authenticated in order to access the resources it exposes. However, the access token is a liability as if stolen it grants access to a potential attacker. Therefore, traditionally access token have a short expiration to limit teh likelyhodd to be exploited by malicious callers were they stolen i.e. expiration that range from few minutes to an hour are common.
 
-Howver, when the access token expires the caller is forced to re-authenticate which might not be practical for the user 
+Howver, when the access token expires the caller is forced to re-authenticate which might not be practical for the user
+ 
 ---
 
 
