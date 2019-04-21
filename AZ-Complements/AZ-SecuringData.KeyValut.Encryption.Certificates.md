@@ -314,6 +314,9 @@ In this case we must somehow **configure Azure SQL Server** to **accept connecti
 | Does not need to store client secrets in web.config   | Must store client secrest to access KeyVault in web.config|  
 | easier to configure that Azure KeyVault | - |
 | Can be used to authenticate any service that support Azure AD authentication | Can be used to any service that need secrets |
+| **Cannot test locally** | Can test Locally |
+
+---
 
 ### Some Azure Sevices taht support Azure AD Authentication
 
@@ -361,6 +364,8 @@ az sql server ad-admin create
 ```
 
 Also this command returns some JSOn that describes the resource created in Azure. This time it is a **login on an Azure SQL instance**. 
+
+---
 
 ---
 
