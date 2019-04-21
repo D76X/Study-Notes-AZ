@@ -295,7 +295,7 @@ In the following the typical case in which an application needs to access a SQL 
  
 ### How this problem is solved by Managed Service Identity (MSI)
 
-In this case we must somehow **configure Azure SQL Server** to **accept connections from one or more specific AppService**. In other words, this is the process of **authoirization of an application (AppService) to a third-party such as Azure SQL Server**. This can be achieved by means of **Azure AD**.
+In this case we must somehow **configure Azure SQL Server** to **accept connections from one or more specific AppService**. In other words, this is the process of **authoirization of an application (AppService) to a third-party backend such as Azure SQL Server**. This can be achieved by means of **Azure AD** and the **Authorization Grant Flow**.
 
 1. Create a new **Azure AD Identity for the AppService**.
 2. Configure the third-party (Azure SQL Server) to grant this identity the permissions it needs. 
@@ -305,7 +305,62 @@ In this case we must somehow **configure Azure SQL Server** to **accept connecti
 
 ### [Which one is best Azure KeyVault and Managed Service Identity (MSI)?](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=7&mode=live)  
 
-**Managed Service Identity (MSI) is recommended over Azure KeyVault** as the latter still relies on **clent ID + client secret (client identity)** to access the KeyVault. This emplys the classic **OAuth Autorization Code Grant Flow** which is very secure but relays on the **secure storage of client secretes**. Coversely, Managed Service Identity **(MSI) does not need client secrets at all** it allows direct access to the `third-party` resource i.e. Azure SQL Server simply leveragin **Azure ID and the identity issued to the AppService**. 
+**Managed Service Identity (MSI) is recommended over Azure KeyVault** as the latter still relies on **clent ID + client secret (client identity)** to access the KeyVault. This employs the classic **OAuth Autorization Code Grant Flow** which is very secure but relays on the **secure storage of client secretes**. Coversely, Managed Service Identity **(MSI) does not need client secrets at all** it allows direct access to the `third-party` resource i.e. Azure SQL Server simply leveragin **Azure ID and the identity issued to the AppService**. 
+
+- MSI does not require the client application (AppService) to hold secrets in its web.config while this is necessary in the cas
+
+| MSI          | Azure Key Vault     |
+| ------------ | ------------------- |
+| Does not need to store client secrets in web.config   | Must store client secrest to access KeyVault in web.config|  
+| easier to configure that Azure KeyVault | - |
+| Can be used to authenticate any service that support Azure AD authentication | Can be used to any service that need secrets |
+
+### Some Azure Sevices taht support Azure AD Authentication
+
+- Azure SQL
+- Azure Service Bus
+- Azure Storage
+- Azure Key Vault
+- Azure Resource Manager
+- Azure Data Lake
+
+---
+
+### [Demo: Configuring Managed Service Identity](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=8&mode=live)  
+
+The following set of Azure CLI commands illustrate the process
+
+1. Creation of an Azure AD identity for an existing AppService
+2. Creation of a Azure SQL user with read/write permissions and the given i
+identity
+
+```
+az webapp identity assign 
+--resource-group MyRG 
+--name MyApp
+```
+
+The reuturns a JSON susch as
+
+```
+{
+    "pincipalId": "...GUID...",
+    "tenantId": "...GUID...",
+    "type": "SystemAssigned",
+}
+```
+
+Then the `pincipalId` can be used to set up the user on Azure SQL Server for the database that the AppService with such identity needs to run queries against.
+
+```
+az sql server ad-admin create 
+--resource-group MyRG 
+--server-name MyServer
+-display-name msiadmin
+-object-id  `pincipalId`
+```
+
+Also this command returns some JSOn that describes the resource created in Azure. This time it is a **login on an Azure SQL instance**. 
 
 ---
 
