@@ -740,6 +740,16 @@ Disable-AzureRmVMDiskEncryption `
 ```
 
 ---
+
+### [Encrypting Data with Always Encrypted on Azure SQL: Overview](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=8d333323-ac80-4a31-8e8d-bd8b229fcbdd&clip=0&mode=live)
+
+- Why it is important to encrypt the data?
+- What is the **Always-Encrypted** feature?
+- Deterministic vs Randomized Encryption Option
+- Apply the **Always-Encrypted** selectively at a column level
+
+
+---
 ---
 
 ## [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas)  
