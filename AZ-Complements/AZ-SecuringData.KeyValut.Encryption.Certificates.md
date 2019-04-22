@@ -673,7 +673,7 @@ Add-AzureKeyVaultKey -VaultName $kvName
 ```
 
 **The following is the most interesting bit**. In order to be able to read off the encryption key **an application that can read the key from the KeyVault must exist**.
-In the following exerpt we do just that.
+In the following exerpt we do just that. Notice that we will need it use the password to **authenticate the application with Azure ID** in order to obtain the corresponding **client secret**. In turn the **VM disk encryption command will make use of the application secret to be able to read the encryption key from the KeyVault**.
 
 ```
 $appName = "AppToReadEncryptionKeysForVMs"
@@ -687,7 +687,33 @@ $app = New-AzureRmADApplication `
 -IdentifierUris $IdentifierUris `
 -Password $securePassword 
 
+# create an identity for the application of Azure AD
+# this allows the app to authenticate on Azure AD and be allowed to 
+# read the key from the KeyVault
 New-AzureRmADServicePrincipal - ApplicationId $app.ApplicationId
+```
+
+```
+# provide the permissions the application needs on the KeyVault 
+# to access the KeyVault
+Set-AzureRmKeyVaultAcessPolicy -VaultName $kvName`
+-SetPrincipalName $app.ApplicationId
+-PermissionToKeys "WrapKey"
+-PermissionToSecret "Set"
+```
+
+Now it is possible **to enable disk encryption for teh VM**
+
+```
+$appClientSecret = (New-Object PSCredential "user",$securePassword).GetNetworkCredential().Password
+Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgName `
+-VMName $vmName `
+-AadClientID $app.ApplicationId `
+-AadClientSecret $appClientSecret `
+-DiskEncryptionKeyVaultUrl $diskEncryptionKeyVaultUrl `
+-DiskEncryptionKeyVault $keyVaultResourceId `
+-KeyEncryptionKeyUrl $keyEncryptionKeyUrl `
+-KeyEncryptionKeyVaultId $keyVaultResourceId
 ```
 
 ---
