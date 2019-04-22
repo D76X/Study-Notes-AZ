@@ -570,7 +570,7 @@ $properties = $properties Add-Member `
 -Value 'True'
 
 Set-AzureRmResource ` 
--resourceId $resource.ResouirceId
+-resourceId $resource.ResourceId
 -Properties $properties
 
 $properties = $properties Add-Member `
@@ -582,6 +582,37 @@ Set-AzureRmResource `
 -resourceId $resource.ResouirceId
 -Properties $properties
 
+```
+
+```
+$storageAccount = GetAzureRmStorageAccount `
+-ResourceGroupName "MyRG" `
+-AccountName "MSorageAccount"
+
+$kv = Get-AzureRmKeyVault -VaultName $vaultName
+
+# grab a reference to the customer-managed key
+# the key name can be read from the Azure Portal
+# when you visit the KeyVault
+$key = GetAzureRmVaultKey 
+-VaultName $kv.VaultName 
+-Name "myCutomerMangedKey0"
+
+# set an access policy for teh storage account
+Set-AzureRmKeyVaultAcessPolicy
+-VaultName $kv.VaultName
+-ObjectId $storageAccount.Identity.PrincipalId
+-PermissionsToKeys wrapkey, unwrapkey, get
+
+# set te encryption policy on the storage account
+# so that the customer key is used
+Set-AzureRmStorageAccount
+-ResourceGroupName $storageAccount.ResourceGroupName `
+-AccountName $storageAccount.StrongAccountName `
+-KeyVaultEncryption `
+-KeyName $key.Name
+-KeyVersion $key.Version
+-KeyVaultUri $kv.VaultUri
 ```
 
 ---
