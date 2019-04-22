@@ -153,7 +153,17 @@ You searched for <strong><script>alert(document.cookies)</script></strong>
 
 ## Cross SiteRequest Forgery (CSRF/XSRF)
 
+#### An Example of XSRF/CSRF
+
+You might go to a banking website and provide some credentials to log into your account. Your **credenitals is stored in a secure browser cookie i.e. a session cookies** for a certain period of time so the bank can tell you are still logged in instead of having you login another time with each page you access. 
+
+Later on, you go to an innocent-seeming webpage listing some facts about bunnies. Unbeknownst to you, the webpage’s HTML also has a little Javascript script to make an AJAX request (see: XMLHttpRequest) to the previous banking website to make a wire transaction to another account **POST/PUT** or retrive bank accountdetails **GET** that can ultimately then be sent to the attacker's domain. 
+
+Because your session is still authenticated with the cookie that was stored earlier, the banking website thinks it’s just you clicking on a link on their site to submit a wire transaction. 
+
 ### Typical Strategies to perform the attack  
+
+1. Social engineering in general that is crafting links to malicious websites and inducing victims to click on the crafted links to direct users to the attacker's domain.
 
 ### Typical Remedies
 

@@ -705,7 +705,14 @@ Set-AzureRmKeyVaultAcessPolicy -VaultName $kvName`
 Now it is possible **to enable disk encryption for teh VM**
 
 ```
+$vaultName = "MyVault"
+$kv = Get-AzureRmKeyVault -VaultName $vaultName -ResourceGroupName $rgName 
+$diskEncryptionKeyVaultUrl = $kv.VaultUri
+$keyVaultResourceId = $kv.ResourceId
+
 $appClientSecret = (New-Object PSCredential "user",$securePassword).GetNetworkCredential().Password
+
+# this requires reboot and might take up to 15 minutes to encrypt the disks
 Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgName `
 -VMName $vmName `
 -AadClientID $app.ApplicationId `
@@ -716,6 +723,13 @@ Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $rgName `
 -KeyEncryptionKeyVaultId $keyVaultResourceId
 ```
 
+It is possible to verify the status of teh encryption on teh VM
+
+```
+Get-AzureRmVmDiskEncryptionStatus `
+-ResourceGroupName $rgName `
+-VMName $vmName 
+```
 ---
 ---
 
