@@ -318,7 +318,7 @@ In this case we must somehow **configure Azure SQL Server** to **accept connecti
 
 ---
 
-### Some Azure Sevices taht support Azure AD Authentication
+### Some Azure Sevices that support Azure AD Authentication
 
 - Azure SQL
 - Azure Service Bus
@@ -331,11 +331,18 @@ In this case we must somehow **configure Azure SQL Server** to **accept connecti
 
 ### [Demo: Configuring Managed Service Identity](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=8&mode=live)  
 
-The following set of Azure CLI commands illustrate the process
+The steps involved in setting up **Microsft Managed Identity (MSI)** between a Azure SQL instance and an AppService are the following.
+
+1. Create a new **Azure AD Identity** for the AppService
+2. Create a **login** in the Azure SQL instance for such identity
+3. As an admin of the Azure SQL instance grant the login the permission that it needs
+4. **Remove the username and password credentials from the connection string in the web.config of the AppService and replace it with the new AppService identity**
+5. Modify the server side code of teh AppService to make use of this new connection string.
+
+The following set of Azure CLI commands illustrate the process of
 
 1. Creation of an Azure AD identity for an existing AppService
-2. Creation of a Azure SQL user with read/write permissions and the given i
-identity
+2. Creation of a Azure SQL login with read/write permissions and the given identity
 
 ```
 az webapp identity assign 
@@ -363,9 +370,69 @@ az sql server ad-admin create
 -object-id  `pincipalId`
 ```
 
-Also this command returns some JSOn that describes the resource created in Azure. This time it is a **login on an Azure SQL instance**. 
+Also this command returns some JSON that describes the resource created in Azure. This time it is a **login on an Azure SQL instance**. 
 
----
+With the new Azure AD identity for teh AppService and the Azure SQL login and permission already set up it is now possible to modify the server side code of the AppService in order to make it possible for it to direcctly connect to the Azure SQL instance and authenticate to it via Azure AD by means of its own Azure AD identity. 
+
+In order to achieve this the server side code of the AppService mustuse the API provided in the following NuGet package.
+
+```
+Microsoft.Azure.Services.AppAuthentication
+```
+
+The `connectionString` in the `web.config` of teh AppService can now be changed from the following which clearly still **insecurely exposes the password and username** to the edited form where these details are entirely removed.  
+
+```
+<add 
+name="SqlDataConnection"
+connectionString = "data source=...;
+initial catalog=...; 
+pesist security info=True;
+user id=AppServiceLogin";
+password=p@$$word;
+MultipleActiveResultSets=True
+>
+```
+
+```
+<add 
+name="SqlDataConnection"
+connectionString = "data source=...;
+initial catalog=...; 
+pesist security info=True;
+MultipleActiveResultSets=Tru
+>
+```
+
+As the **insecure and exposed password and username details have been completely removed** there is now no possible way these details could be leaked into source control and to the wider public or even stolen by developers for malicious purposes. However, it is now necessary to **supplement in code the connection string with teh Azure ID of the AppService** at the time a connection to the Azure SQL instance is attempted.
+
+This can be achieved very easily thanks to the Authentication API made available in the `Microsoft.Azure.Services.AppAuthentication` package that has been installed. The following code exerpt illustrates the logic
+of this abstraction.
+
+Without MSI you would do something like what it is shown by the code below. Either username and password are hardcoded into the connection string directly which is the least secure solution. Otherwise, the process of generating the connection string **could be made more secure by using KeyVault to store username and password instead of hardcoding it into the connection string** and then composing the connection string via dynamic strings where the username and password details come from Azure KeyVault at runtime.
+
+However, **even with such approach the secrets to access KeyVault would have to be stored in the web.config in place of the username and password** and the username and password would utlimately be read from the KeyVault at run time by using these secrets and letting the server code of the AppService  authenticate to Azure AD first all secured by teh fact that the AppService not only holds the KeyVault secrets but also runs under a **trusted Azure AD domain**.
+
+```
+var cnnectionString = ConfigirationManager.ConnectionStrings["SqlDataConnection"];
+
+db = new SqlConnection(connectionString);
+```
+
+However, with the **Microsoft Managed Identity (MSI) approach** the **username and password are no longer necessary**. The Azure SQL service will be able to authorize teh AppService once this is authenticated with Azure AD and Azure AD set up so that the AppSevice Azure AD identity has a valid login on the Azure SQL instance which is the case in thi example thanks to the Azure CLI scripts run previously.  
+
+```
+var connectionString = ConfigirationManager.ConnectionStrings["SqlDataConnection"];
+
+string sqlServerInstanceUrl = "https://database.windows.net/"
+var tp = new AzureServiceTokenProvider();
+var accessToken = tp.GetAccessTokenAsync(sqlServerInstanceUrl).Result;
+
+db = new SqlConnection(){
+    AccessToken = accessToken,
+    ConnectionString = connectionString
+};
+```
 
 ---
 
