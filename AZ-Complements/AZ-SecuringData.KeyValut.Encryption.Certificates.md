@@ -730,6 +730,15 @@ Get-AzureRmVmDiskEncryptionStatus `
 -ResourceGroupName $rgName `
 -VMName $vmName 
 ```
+
+It is also possible to **disable disk encryption on a VM**
+
+```
+Disable-AzureRmVMDiskEncryption `
+-ResourceGroupName $rgName `
+-VMName $vmName 
+```
+
 ---
 ---
 
