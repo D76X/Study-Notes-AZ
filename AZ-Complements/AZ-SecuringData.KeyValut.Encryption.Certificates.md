@@ -173,11 +173,25 @@ The following Powershell script which must be run in `admin` mode is pretty self
 
  ```
  Connect-AzureRmAccount
- New-AzureRmKeyVault - VaultName 'MyApplicationVault' - ResourceGroup 'MyResourceGroup' -Location 'North Europe'
+
+ New-AzureRmKeyVault 
+ -VaultName 'MyApplicationVault' 
+ -ResourceGroup 'MyResourceGroup' 
+ -Location 'North Europe'
+ 
  # convert the item to store as a secret in the Vault to a secure string
- $secureString = ConvertTo-SecureString -String "connection_string" -AsPlainText -Force
+ $secureString = ConvertTo-SecureString 
+ -String "connection_string" 
+ -AsPlainText 
+ -Force
+ 
  # add the item to the vault and get the secret in return to use in your app
- $secret = SetAzureKeyVaultSecret -VaultName 'MyApplicationVault' - Name 'ConnectionString1' -SecretValue  $secureString  
+ 
+ $secret = SetAzureKeyVaultSecret 
+ -VaultName 'MyApplicationVault' 
+ -Name 'ConnectionString1' 
+ -SecretValue  $secureString  
+ 
  # print the ID of the secret as a feedback to make sure that it has been actually created in Key Vault
  # the id of the secret is also to be used in the apps that needs to retrieve the secret from the Vault 
  $secureString.Id
@@ -225,7 +239,9 @@ The following code exerpt shows hot to use the client library to retrive a secre
 
 ```
 var kv = new KeyVaultClient(KeyVaultClient.AuthenticationCallback(KeyVaultService.GetToken));
+
 var secret = kv.GetSecretAsync(WebConfigiration.AppSettings["ConnectionString"]).Result;
+
 KeyVaultService.ConnectionString = secret.Value;
 ```
 
@@ -243,8 +259,11 @@ For this reason **Zure Key Vault** offer a **soft delete option** whic **allows 
 
 ```
 $kv = Get-AzureRmKeyVault -VaultName "MyVault1"
+
 $resource = Get-AzureRmResource -ResourceId $kv.Id
+
 ($resource).Properties | Add-Member -MemberType "NoteProperty" -Name "enableSoftDelete" -Value "true"
+
 Set-AzureRmResource -ResourceId $resource.Id -Properties $resource.Properties
 ```
 
@@ -260,8 +279,11 @@ Undo-AzureRmKeyVaultRemoval -VaultName "MyVault1" -ResourceGroupName "MyRG1" -Lo
 
 ```
 $kv = Get-AzureRmKeyVault -VaultName "MyVault1"
+
 $resource = Get-AzureRmResource -ResourceId $kv.Id
+
 ($resource).Properties | Add-Member -MemberType "NoteProperty" -Name "enablePurgeProtection" -Value "true"
+
 Set-AzureRmResource -ResourceId $resource.Id -Properties $resource.Properties
 ```
 
@@ -432,6 +454,134 @@ db = new SqlConnection(){
     AccessToken = accessToken,
     ConnectionString = connectionString
 };
+```
+
+---
+
+### [How to overcome the not local testability of MSI based solutions](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=9&mode=live)  
+
+**One practical problem with the Micosoft Managed Identity (MSI) approach** is that the AppService code cannot be tested locally. 
+
+This is due to teh fact that the AppService code to be able to successfully coonect to the Azure SQL instance or any other Azure ID managed services that it needs to interact with **it must at run time first authenticate with Azure AD** and then ask Azure AD to issue an **authorization token** for each of the Azure AD controlled services it needs to access. However, the AppService **will only be able to successfully authenticate with Azure AD by running in the corresponding Azure AD registered domain**. Unfortunately, the localhost of the developer's amchine is not such domain thus the AppService running in Visual Studio cannot authenticate with Azure AD.
+
+#### Azure Authentication Extension for Visual Studio 2017 Update 5
+
+This extension **allows the developer to authenticate to Azure AD on behalf of the AppService by using their Azure AD credentials**. In more recent versions of Visual Studio 2017 this extension is already ship as part of the product and does not need to be installed separatly. 
+
+Obviously, in order for this to work for example with the Azure SQL Serevr instance of the previos examples a login for the Azure ID identity of the developer must provided on the corresponding Azure SQL Server Instance used in the test environment. 
+
+#### [Microsoft Credential Scanner aka CredScan](https://azure.microsoft.com/en-us/blog/managing-azure-secrets-on-github-repositories/)  
+
+This tool **monitors all incoming commits on GitHub** and checks for specific Azure tenant secrets such as Azure subscription management certificates and Azure SQL connection strings. **Upon detection of an exposed secret, the Azure subscription owner gets notified via email from Microsoft’s Cyber Defense Operation Center (CDOC)**. The email notifies users on which commits have an issue, along with their affected subscriptions, assets, secret type and guidance on how to fix the exposure.
+
+### Remedies against compromised secrets
+
+Keep in mind that **removing a published secret does not address the risk of exposure**. The secret may have been compromised, with or without your knowledge and is still exposed in Git History. For these reasons, the secret must be rotated and/or revoked immediately to avoid security risks.
+
+Some recommended steps to help mitigate this risk:
+
+- Rotate the published credential immediately (e.g. If it detects a leaked certificate then the certificate must be reissued, and the leaked certificate removed and/or revoked).
+- Update configs/apps to use the new secret as necessary.
+- Store the new secret in Azure Key Vault and out of GitHub.
+- Do not publicly share or expose the new secret.
+- Remove the published secret.
+
+### Demos
+
+- [Demo: Visual Studio Extension to Obtain Access Token ](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=10&mode=live)
+
+---
+
+## [Encrypting & Decryptying Data at Rest](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=0&mode=live)  
+
+- Why is a good idea to encrypt data at rest?
+- What is **Azure Storage Service Encryption for data at rest**?
+- How to configure customer-managed keys for storage account
+- Azure Disk Encryption for IaaS i.e. VMs
+
+### [Understanding Azure Storage Service Encryption for Data at Rest](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=1&mode=live)  
+
+**Data at rest** is any data physically stored on a digital support i.e. files, databases or whole disks and hard drives. This data can be subjected to **attacks** which may find a way to **get physical access to the hardware used as a strorage**.
+
+In **the context od Azure Storage Services** it might appear that physical access to the digital support is not an option available to attackers thus making of encryption at rest an unnecessary defence. However, the following may be reasons for which the ability of encryption data at rest is still a necessity for many arganizations which operate some of their infrastructure or software in the cloud.
+
+1. **Compliance** as encryption at rest may be required by law or standards.
+2. Maintaing the security standards of the on-premise infrastructure after transition to Microsoft Azure.
+
+#### Azure Storage Types for which Encryption at rest is supported
+
+1. Azure Blob storage
+2. Azure Table storage
+3. Azure File storage
+4. Azure Queue storage
+5. Azure Managed Disk 
+6. Encryption for VM disks
+
+### [Storage Service Encryption (SSE)](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=1&mode=live)  
+
+This is the Azure Service that provides encryption services for data at rest il all the cases above. It is **enabled by default on all Azure Storage Accounts and all tiers and cannot be disabled**. This service employes **256-bit Advanced Encryption Standard (AES) encryption**which is one of the strongest **block ciphers available**.
+
+### [How SSE works](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=2&mode=live)  
+
+The **authomatic always-on at-rest encryption mechanism** prvided by SSE is based on **Microsoft-Managed Keys** which are used to encrypt the data as they are persisetd to any of the managed storage options on a storage account i.e when an AppService sends any data to any of the Azure Managed Storage Services to be persisted. Coversely **the same Microsoft-Managed Key is used to decrypt the data** when it needs to be retrieved and sent off to a consumer i.e. an AppSercice.
+
+#### Customer-Managed Key
+
+It is possible to **replace the Microsoft-Managed Key with a customer-managed key** if so desired. The used of **customer-managed keys** provide more security options and flexibility i.e. these keys can be revoked or rotated. One important requirement to satisfy in order to use Customer-Managed Keys is **to store them in Azure Key Vault**. It is then necessary to configure each storage container to dynamically read the encryption key from the Azure KeyVault to performe the same encrypt/decrypt steps previously discussed.
+
+1. In the Azure Portal navigate to the encryption blade
+2. Check the **use your own key option**
+3. Now select the URL of an existing KeyVault for an encryption key or create a new one
+
+- [Demo - Configuring SSE with a customer-managed key for an AppService](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=3&mode=live)  
+
+1. Create an Azure AD identity for the Storage Account 
+2. Create an AzureKeyVault to store the customer-managed encryption key for SSE
+3. Enable Soft-Delete and Do Not Purge option on the KeyVault to prevent losing the encryption key by accident
+4. Configure the Storage Account to use the KeyVault that holds the customer-managed Key this can be done from the Azure Portal in from teh Ecryption blade (Use Your Own Key option)
+5. Create a new key that will be stored in the KeyVault
+
+```
+Connet-AzureRmAccount
+```
+
+```
+Set-AzureRmStorageAccount 
+-ResurceGroupName "MyRG"
+-Name "MSorageAccount"
+-AssignIdentity
+```
+
+```
+# use an existing KeyVault in your subscription
+# or create a new one 
+# but make sure you enable Soft Delete & Do Not Purge
+# on it to prevent the possibility of permanently 
+# losing the keys!
+
+$vaultName = "MyVault"
+$kv = Get-AzureRmKeyVault -VaultName $vaultName
+$resource = GetAzureRmResource -ResourceId $kv.ResourceId
+$properties = $resource.Properties
+
+$properties = $properties Add-Member `
+-MemberType NoteProperty `
+-Name enableSoftDelete `
+-Value 'True'
+
+Set-AzureRmResource ` 
+-resourceId $resource.ResouirceId
+-Properties $properties
+
+$properties = $properties Add-Member `
+-MemberType NoteProperty `
+-Name enablePurgeProtection`
+-Value 'True'
+
+Set-AzureRmResource ` 
+-resourceId $resource.ResouirceId
+-Properties $properties
+
 ```
 
 ---
