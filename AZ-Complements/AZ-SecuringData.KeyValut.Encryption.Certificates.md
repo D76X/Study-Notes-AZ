@@ -519,7 +519,7 @@ In **the context od Azure Storage Services** it might appear that physical acces
 
 ### [Storage Service Encryption (SSE)](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=1&mode=live)  
 
-This is the Azure Service that provides encryption services for data at rest il all the cases above. It is **enabled by default on all Azure Storage Accounts and all tiers and cannot be disabled**. This service employes **256-bit Advanced Encryption Standard (AES) encryption**which is one of the strongest **block ciphers available**.
+This is the Azure Service that provides encryption services for data at rest iN all the cases above that is for **PaaS** Azure option for data storage. It is **enabled by default on all Azure Storage Accounts and all tiers and cannot be disabled**. This service employes **256-bit Advanced Encryption Standard (AES) encryption**which is one of the strongest **block ciphers available**.
 
 ### [How SSE works](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=2&mode=live)  
 
@@ -615,6 +615,82 @@ Set-AzureRmStorageAccount
 -KeyVaultUri $kv.VaultUri
 ```
 
+---
+
+### [Understanding Microsoft Azure Disk Encryption (ADE)](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=5&mode=live)  
+
+**Storage Service Encryption (SSE)** is used for **PaaS** Azure for data storage. However, Azure VMs have **operating system disk and data disk** as physical virtualized devices hosted on Azure infrastructure that is they are IaaS options to which **SSE does not apply**. In fact these disk are sotred in **a specialized type of Azure Blob Storage called Azure Page Blobs**.
+
+For VMs that may hpolds sensitive data it is advisable to encrypt both disks to make sure they cannot be tampered with should these be downloaded and fall in the wrong hands.
+
+**Windows OS employes BitLocker to provide opt-in encryption of the hard drive on physical machines** while **Linux employes `dm-crypt`** and **Microsoft Azure Disk Encryption (ADE)** builds on these. 
+
+However, **it is not enabled by default**. In order to take advantage of ADE teh requirements are
+
+1. enable the featurefor the VM.
+2. create an encryption key and store in KeyVault
+3. configure the VM to use the EK
+
+### Demos 
+
+- [Demo - Demo: Enabling ADE for an IaaS VM](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=6&mode=live)  
+
+```
+Connect-AzureRmAccount
+
+# verify modules are installed
+# if not istall them first as admin
+Get-Module AzureRM -ListAvailbale | Select-Object -Property Name,Version,Path
+Get-Module AzureAD -ListAvailbale | Select-Object -Property Name,Version,Path
+
+# install the module if necessary
+Install-Module AzureAD 
+```
+
+```
+# register Microsoft Azure KeyVault Resource Provider
+# it is required by Azure Disk Encryption (ADE) to read teh key
+Register-AzureRmResourcePropvider -ProviderNamespace "Microsoft.KeyVault"
+
+# create a new keyVault
+$kvName = "myDiskEncryptionKeyVaultName"
+$location = "North Europe"
+$rgName = "MyRG"
+
+# must set -EnabledForDiskEncryption to work with ADE
+New-AzuireRmKeyVault -Location $location `
+-ResourceGroupName $rgName `
+-VaultName $kvName `
+-EnabledForDiskEncryption `
+
+# create a cryptographic key in the KV
+# we use the -Destination "Software" but the -Destination "HSM"
+# could be used instead to store teh key on a Hard Security Module 
+$keyName = "myDiskEncryptionKeyName"
+Add-AzureKeyVaultKey -VaultName $kvName
+-Name $keyName
+-Destination "Software"
+```
+
+**The following is the most interesting bit**. In order to be able to read off the encryption key **an application that can read the key from the KeyVault must exist**.
+In the following exerpt we do just that.
+
+```
+$appName = "AppToReadEncryptionKeysForVMs"
+$homePage = "https://mayapplication.azurewebsites.net"
+$IdentifierUris = "https://mayapplication.azurewebsites.net/contact"
+$securePassword = ConvertTo-SecureString -String "P@$$word!" -AsPlainText -Force
+
+$app = New-AzureRmADApplication `
+-DisplayName $appName `
+-HomePage $homePage `
+-IdentifierUris $IdentifierUris `
+-Password $securePassword 
+
+New-AzureRmADServicePrincipal - ApplicationId $app.ApplicationId
+```
+
+---
 ---
 
 ## [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas)  
