@@ -703,7 +703,7 @@ Set-AzureRmKeyVaultAcessPolicy -VaultName $kvName`
 -PermissionToSecret "Set"
 ```
 
-Now it is possible **to enable disk encryption for teh VM**
+Now it is possible **to enable disk encryption for the VM**
 
 ```
 $vaultName = "MyVault"
@@ -774,6 +774,33 @@ Disable-AzureRmVMDiskEncryption `
 ---
 
 ### [Introducing Azure SQL Database Always Encrypted](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=8d333323-ac80-4a31-8e8d-bd8b229fcbdd&clip=2&mode=live)  
+
+**Primarily, Always-Encrypted protect sensitive data at rest AND transit** which is why the term **ALWAYS** is used to refer to it. It is an encryption technology to encrypt columns and tables on Azure SQL Server & Database so that **sensitive data is never held as plain text or data in the database and becomes transparent only to applications or users which have access to the right encryption keys**. 
+
+It is possible to assign **access to encryption keys for Azure SQL Server/DB** to
+
+1. Users and Acoounts registered in **Azure AD**
+2. Applications registered in **Azure AD**
+
+---
+
+### [How Does Always Encrypted Work?](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=8d333323-ac80-4a31-8e8d-bd8b229fcbdd&clip=3&mode=live)  
+
+When **Always-Encrypted is disable on Azure SQL DB** then User, Account and Applications will be able to access the data once they are able to either.
+
+1. Authenticate through Azure AD and make use of a Connection String which may or may not held on Azure KeyVault
+2. Authenticate through Azure AD via Micosoft Managed Identity (MSI)
+
+When **Always-Encrypted is enabled on Azure SQL DB** there are more steps to in the flow to grant access to the data.
+
+1. Create an Encryption Key **aka Column Master Key (CMK)** for the Azure SQL Server or Batabase
+2. Use the **Column Master Key (CMK)** to **encrypt (protect)** the **Column Encryption Key (CEK)**
+3. Users or Apps must be registered with Azure AD
+4. Users or Apps authenticate on Azure AD and obtain the **client secrets**
+5. Users or Apps use their **client secrets** to access **KeyVault** to access the **CMK**
+6. Users or Apps use the **CMK** to decrypt the **CEK**
+7. Users or Apps use the **CEK** to decrypt and encrypt data from and to the database
+ 
 
 ---
 ---
