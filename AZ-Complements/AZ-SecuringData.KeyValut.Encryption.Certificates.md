@@ -748,6 +748,28 @@ Disable-AzureRmVMDiskEncryption `
 - Deterministic vs Randomized Encryption Option
 - Apply the **Always-Encrypted** selectively at a column level
 
+---
+
+### [Why Do We Need to Encrypt Data in Azure SQL Database?](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=8d333323-ac80-4a31-8e8d-bd8b229fcbdd&clip=1&mode=live)  
+
+**Azure SQL Server by default stores its data with out applying any encryption to the data** that is the whole database is encrypted at rest but within it its data is not. This default behavior finds justification in terms of performance. However, this can be changed on a very granular level so that users (admins) can elect some data in columns within tables or whole tables to be encrypted. 
+
+**The encryption at rest of the whole database protects it from unauthorized access to it**. However, once the authorization hurdle is passed the absense of any ancryption on the data makes it available to read. In may cases a database may also hold sensitive information which might not be appropriate to reveal even to an authorized user. In this cases this sensitive data may be encrypted.
+
+#### Example of Sensitive Information that may require encryption
+
+- Email Addresses
+- DOB
+- Financial Info such as income or taxes
+- Phone Numbers 
+- Addresses
+- Social Security Numbers
+- **Passwords**
+
+#### **Security Layers for Azure SQL**
+
+1. Use Azure KeyVault or Microsoft Managed Identity to secure the Azure SQL instance against unauthorized access.
+2. 
 
 ---
 ---
