@@ -516,6 +516,7 @@ In **the context od Azure Storage Services** it might appear that physical acces
 4. Azure Queue storage
 5. Azure Managed Disk 
 6. Encryption for VM disks
+7. *Azure SQL Server/Database (disabled by default!)
 
 ### [Storage Service Encryption (SSE)](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=5390503a-604c-49e5-b4d2-131e176fd0d6&clip=1&mode=live)  
 
@@ -751,8 +752,7 @@ Disable-AzureRmVMDiskEncryption `
 ---
 
 ### [Why Do We Need to Encrypt Data in Azure SQL Database?](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=8d333323-ac80-4a31-8e8d-bd8b229fcbdd&clip=1&mode=live)  
-
-**Azure SQL Server by default stores its data with out applying any encryption to the data** that is the whole database is encrypted at rest but within it its data is not. This default behavior finds justification in terms of performance. However, this can be changed on a very granular level so that users (admins) can elect some data in columns within tables or whole tables to be encrypted. 
+**Azure SQL Server by default stores its data without applying any encryption to the data** that is the whole database is **secured in respect to who is authorized to access it** but within it its data is not. This default behavior finds justification in terms of performance. However, this can be changed on a very granular level so that users (admins) can elect some data in columns within tables or whole tables to be encrypted. 
 
 **The encryption at rest of the whole database protects it from unauthorized access to it**. However, once the authorization hurdle is passed the absense of any ancryption on the data makes it available to read. In may cases a database may also hold sensitive information which might not be appropriate to reveal even to an authorized user. In this cases this sensitive data may be encrypted.
 
@@ -770,6 +770,10 @@ Disable-AzureRmVMDiskEncryption `
 
 1. Use Azure KeyVault or Microsoft Managed Identity to secure the Azure SQL instance against unauthorized access.
 2. 
+
+---
+
+### [Introducing Azure SQL Database Always Encrypted](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=8d333323-ac80-4a31-8e8d-bd8b229fcbdd&clip=2&mode=live)  
 
 ---
 ---
