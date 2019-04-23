@@ -791,7 +791,7 @@ When **Always-Encrypted is disable on Azure SQL DB** then User, Account and Appl
 1. Authenticate through Azure AD and make use of a Connection String which may or may not held on Azure KeyVault
 2. Authenticate through Azure AD via Micosoft Managed Identity (MSI)
 
-When **Always-Encrypted is enabled on Azure SQL DB** there are more steps to in the flow to grant access to the data.
+When **Always-Encrypted is enabled on Azure SQL DB** there are more steps to in the flow to grant access to the data and **ytwo encryption keys are involved in the IO dance with Azure SQL Server/Database**.
 
 1. Create an Encryption Key **aka Column Master Key (CMK)** for the Azure SQL Server or Batabase
 2. Use the **Column Master Key (CMK)** to **encrypt (protect)** the **Column Encryption Key (CEK)**
