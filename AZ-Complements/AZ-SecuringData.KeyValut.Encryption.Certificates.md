@@ -799,8 +799,48 @@ When **Always-Encrypted is enabled on Azure SQL DB** there are more steps to in 
 4. Users or Apps authenticate on Azure AD and obtain the **client secrets**
 5. Users or Apps use their **client secrets** to access **KeyVault** to access the **CMK**
 6. Users or Apps use the **CMK** to decrypt the **CEK**
-7. Users or Apps use the **CEK** to decrypt and encrypt data from and to the database
- 
+7. Users or Apps use the **CEK** to decrypt and encrypt data from and to the database 
+
+---
+
+### [Randomized and Deterministic Column Encryption Types](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=8d333323-ac80-4a31-8e8d-bd8b229fcbdd&clip=4&mode=live)
+
+
+| Randomized      | Deterministic       |
+| --------------- | ------------------- |
+| Generate different encrypted values for the same plain text  | Deterministic encrypted value (i.e. no good on bit type)|  
+| **Prevents serching, grouping, joins or indexing** | Serching, grouping, joins or indexing are all possible |
+
+
+---
+
+### [Demo: Configuring Always Encrypted for Our Application](https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=8d333323-ac80-4a31-8e8d-bd8b229fcbdd&clip=5&mode=live)  
+
+```
+# Create a column master key in Azure Key Vault.
+Login-AzureRmAccount
+
+$subscriptionName = 'Pay-As-You-Go'
+$userPrincipalName = 'reza@zaalion.com'
+$applicationId = '386424df-c14a-4436-b872-f186ea2ddc98'
+$resourceGroupName = 'Pluralsight'
+$location = 'East US'
+$vaultName = 'AwysEncKV'
+
+$subscriptionId = (Get-AzureRmSubscription -SubscriptionName $subscriptionName).Id
+Set-AzureRmContext -SubscriptionId $subscriptionId
+
+# this KeyVault is used by Always-Encrypted to store the Coulumn Master Key (CMK)
+New-AzureRmKeyVault -VaultName $vaultName -ResourceGroupName $resourceGroupName -Location $location
+
+# grant key vault access to the user (user will be used to login to Azure in the SSMS wizard)
+Set-AzureRmKeyVaultAccessPolicy -VaultName $vaultName -ResourceGroupName $resourceGroupName `
+-PermissionsToKeys create,get,wrapKey,unwrapKey,sign,verify,list -UserPrincipalName $userPrincipalName
+
+# grant key vault access to MyAddressBook+ application
+Set-AzureRmKeyVaultAccessPolicy  -VaultName $vaultName  -ResourceGroupName $resourceGroupName `
+-ServicePrincipalName $applicationId -PermissionsToKeys get,wrapKey,unwrapKey,sign,verify,list
+```
 
 ---
 ---
