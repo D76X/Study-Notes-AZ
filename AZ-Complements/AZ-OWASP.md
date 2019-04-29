@@ -138,7 +138,7 @@ You searched for <strong><script>alert(document.cookies)</script></strong>
 
 ### Typical Remedies  
 
-1. **Always validate untrasted data** by using a **whitelist of trusted values and trusted patterns**.
+1. **Always validate untrusted data** by using a **whitelist of trusted values and trusted patterns**.
 2. **Always encode the output** that is prevent anything like `<script>..</script>` to be allowed as part of the HTML document. When any dynamic content is provided to a web page the server must enocode it i.e. `< and >` as `&lth; and &gth;` and the same goes for other special characters so that the browser will print them as characters. This guideline is also know as **never reflect to the browser untrusted data that has come with the request i.e. within its query string and data that comes from the database**. On this last point it must be kept in mind that the database might have already been targeted by SQL injection and contain malicious script content thus it cannot be trusted and the data returned by it must be encoded too before reaching the DOM. 
 3. Use encoding libraries do not try to do the encoding yourself.
 
@@ -155,7 +155,7 @@ You searched for <strong><script>alert(document.cookies)</script></strong>
 
 #### An Example of XSRF/CSRF
 
-You might go to a banking website and provide some credentials to log into your account. Your **credenitals is stored in a secure browser cookie i.e. a session cookies** for a certain period of time so the bank can tell you are still logged in instead of having you login another time with each page you access. 
+You might go to a banking website and provide some credentials to log into your account. Your **credenitals is stored in a secure browser cookie i.e. a session cookies** for a certain period of time so the bank can tell you are still logged in instead of you having to login another time with each page you access. 
 
 Later on, you go to an innocent-seeming webpage listing some facts about bunnies. Unbeknownst to you, the webpage’s HTML also has a little Javascript script to make an AJAX request (see: XMLHttpRequest) to the previous banking website to make a wire transaction to another account **POST/PUT** or retrive bank accountdetails **GET** that can ultimately then be sent to the attacker's domain. 
 
@@ -170,9 +170,7 @@ Because your session is still authenticated with the cookie that was stored earl
 ### References 
 
 - [What is the purpose of the 'state' parameter in OAuth authorization request?](https://stackoverflow.com/questions/26132066/what-is-the-purpose-of-the-state-parameter-in-oauth-authorization-request)
-
-- [Create an anti-forgery state token - the state query parameter](https://developers.google.com/identity/protocols/OpenIDConnect?hl=fr#createxsrftoken)  
-
+- [Create an anti-forgery state token - the state query parameter](https://developers.google.com/identity/protocols/OpenIDConnect?hl=fr#createxsrftoken) 
 - [How millions of DSL modems were hacked in Brazil, to pay for Rio prostitutes - XSRF](https://nakedsecurity.sophos.com/2012/10/01/hacked-routers-brazil-vb2012/)  
 
 ---
@@ -207,7 +205,7 @@ Because your session is still authenticated with the cookie that was stored earl
 
 ---
 
-## Missinf Functional Level Access Control
+## Missing Functional Level Access Control
 
 ### Typical Strategies to perform the attack  
 
