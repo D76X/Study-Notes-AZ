@@ -19,6 +19,7 @@ Why to use KeyVault and How it compares to MSI
 https://www.swc.com/blog/application-development/keeping-secrets-safe-with-azure-key-vault-and-managed-service-identities
 https://social.msdn.microsoft.com/Forums/azure/en-US/56bed4bd-6320-4f1f-9af5-556ae91bdf0f/storing-sql-connection-string-passwords-in-key-vault-for-my-cloud-services?forum=AzureKeyVault
 https://www.rahulpnath.com/blog/category/azure-key-vault/
+https://security.stackexchange.com/questions/12332/where-to-store-a-server-side-encryption-key
 https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=2&mode=live
 1. Centralized Management i.e. Grant/Revoke all in the same place
 2. Auditing and Logging is built in
