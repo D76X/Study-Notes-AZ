@@ -1,0 +1,49 @@
+
+What Are We Trying To Protect?
+https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=1&mode=live
+
+1. Cryptographic Keys i.e. those used in Always Encrypted Azure SQL Server or Azure Storage Encryption at Rest these keys are used to encrypt and decrypt teh data
+2. Secrets that is any sensitive information i.e. connection string, passwords, storage connection strings, client secrets, etc.
+3. Certificates x509 certificates used in establishing SSL communication. Both the PBK and PRK must be stored securely.
+
+What is Microsoft Azure Key Vault?
+https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=1&mode=live
+1. Analogy of the Safety Box at the Bank Branch
+
+The Role of Azure AD with Azure Services & Key Vault
+https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=1&mode=live
+Register a ServiceApp with AzureAD to access a KeyVault in order to read Secrets
+On Registering the Service App gets a ClientID & Client Secret back i.e. the ID and The Key from the Anology of the Bank
+
+Why to use KeyVault
+https://www.swc.com/blog/application-development/keeping-secrets-safe-with-azure-key-vault-and-managed-service-identities
+https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=2&mode=live
+1. Centralized Management i.e. Grant/Revoke all in the same place
+2. Auditing and Logging is built in
+3. Rotation and Versioning of keys and secrets
+
+Demo
+https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=3&mode=live
+https://docs.microsoft.com/en-us/azure/key-vault/vs-secure-secret-appsettings
+1. Create a KeyVault (with PowerShell?)
+2. Store a connection string to the KeyVault and remome it from the web.config
+3. Register an application with Azure AD to get ClientID and Client Seecret (Cleint Key)
+4. Configure the App to reach the KeyVault
+
+Notice that out of this process you get 
+
+When the KeyVault is created
+1.the ID of the resource created in the KeyVault
+2.the name of the KeyVault
+
+When you register the App on Azure AD
+3.The ClientID(=ApplicationID) 
+4.The Cleint Secrets - a key that you can create for that app on Azure AD with a set Expiration and that can be Revoked at any time
+
+When you set up the App to talk to KeyVault
+1. First you set up the KeyVault so that it knows that it can talk to the app with the given ApplicationId from above
+
+When you ste the App.Config now you replace the original connection string with three pieces of info
+1. ClientID
+2. ClientSecret
+3. The name of teh key to read from teh keyvault and its URL
