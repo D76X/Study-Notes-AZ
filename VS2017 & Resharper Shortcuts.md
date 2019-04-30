@@ -245,6 +245,7 @@ In this case both **the index and the working area** are reset to the set of the
 | `git add file.txt` | Stages the single file file.txt to the Index. The file is due to be committed.|
 | `git diff --cached` | Shows the differences between the Index and the Repository. Changes that have been added ends up in the index but ar not yes in the Repo thus this command shows the changes that are to to end up in the Repo.|
 | `git commit -m "some changes"` | Moves the changes staged in the index to the Repository and updates it accordingly.|
+| `git push` | To push all the commits in teh Index to teh Repo.|
 | `git checkout mybranch` | Does mainly two things 1) It moves the HEAD reference in the Repository to the selected branch. Remember that a branch is the CURRENT COMMIT. 2) It takes Dat from the new CURRENT COMMIT and it copies it from the Repo to the WA and the Index|
 | `git branch` | Gets the list of branches available in the Repo.|
 | `git branch diff master mybranch` | Shows the differences between the branch named master and the branch named mybranch.|
