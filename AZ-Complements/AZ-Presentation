@@ -1,6 +1,34 @@
+Azure AD
+### [What is Azure AD and why do we need it?](https://app.pluralsight.com/player?course=azure-active-directory-developers&author=sahil-malik&name=azure-active-directory-developers-m1&clip=1&mode=live) 
+https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis
+
+Azure Active Directory (Azure AD) is Microsoft’s cloud-based identity and access management service
+Service to manage Identity
+helps your employees sign in and access resources
+External resources, such as Microsoft Office 365, the Azure portal, and thousands of other SaaS applications
+Internal resources, such as apps on your corporate network and intranet, along with any cloud apps developed by your own organization.
+Designed for Internet Scale (OAuth) & Open Internet Standards (REST)
+It's free (basic)
+https://app.pluralsight.com/player?course=azure-active-directory-developers&author=sahil-malik&name=azure-active-directory-developers-m1&clip=4&mode=live
+It warks on all platforms
+
+Add a User to a Directory
+https://stackoverflow.com/questions/48582271/add-users-members-to-azure-active-directory-that-isnt-of-a-verified-domain-na
+An Azure subscription has a trust relationship with Azure Active Directory (Azure AD), which means that the 
+subscription trusts Azure AD to authenticate users, services, and devices. Multiple subscriptions can trust 
+the same Azure AD directory, but each subscription can only trust a single directory. All of your users have a 
+single home directory for authentication. However, your users can also be guests in other directories. 
+You can see both the home and guest directories for each user in Azure AD.
+
+Associate or add an Azure subscription to your Azure Active Directory tenant
+https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-how-subscriptions-associated-directory
+
+===============================================
+Azure KeyVault 
 
 What Are We Trying To Protect?
 https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=1&mode=live
+https://www.youtube.com/watch?v=1IQbw_iXPu4
 
 1. Cryptographic Keys i.e. those used in Always Encrypted Azure SQL Server or Azure Storage Encryption at Rest these keys are used to encrypt and decrypt teh data
 2. Secrets that is any sensitive information i.e. connection string, passwords, storage connection strings, client secrets, etc.
