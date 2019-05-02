@@ -1,3 +1,4 @@
+==============================================================================================================================================================
 Azure AD
 ### [What is Azure AD and why do we need it?](https://app.pluralsight.com/player?course=azure-active-directory-developers&author=sahil-malik&name=azure-active-directory-developers-m1&clip=1&mode=live) 
 https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis
@@ -23,7 +24,7 @@ You can see both the home and guest directories for each user in Azure AD.
 Associate or add an Azure subscription to your Azure Active Directory tenant
 https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-how-subscriptions-associated-directory
 
-===============================================
+==============================================================================================================================================================
 Azure KeyVault 
 
 What Are We Trying To Protect?
@@ -78,3 +79,4 @@ When you ste the App.Config now you replace the original connection string with 
 1. ClientID
 2. ClientSecret
 3. The name of teh key to read from teh keyvault and its URL
+==============================================================================================================================================================
