@@ -86,19 +86,32 @@ When you ste the App.Config now you replace the original connection string with 
 Introduction to Cryptographic Keys and Certificates
 https://www.youtube.com/watch?v=q9vu6_2r0o4
 
+Private Key Encryption (Symmetric Key Encryption)
+https://www.youtube.com/watch?v=vk3py9M2IfE&list=PLSNNzog5eyduN6o4e6AKFHekbH5-37BdV
+Stream Cypher RC4
+Block Cypher DES,TDES,IDEA,RC5,AES,Blowfish
+
 What is digital signature?
 https://www.youtube.com/watch?v=TmA2QWSLSPg
 1-authentication
 2-non repudation
 3-integrity
 
-Private Key Encryption (Symmetric Key Encryption)
-https://www.youtube.com/watch?v=vk3py9M2IfE&list=PLSNNzog5eyduN6o4e6AKFHekbH5-37BdV
-Stream Cypher RC4
-Block Cypher DES,TDES,IDEA,RC5,AES,Blowfish
+Why digital certificate?
+https://www.youtube.com/watch?v=UbMlPIgzTxc&t=1s
+
+PKI - trust & chain of trust -why, who and how?
+https://www.youtube.com/watch?v=LPxeYtMDxl0
+
+https://www.youtube.com/watch?v=1xtBkukWiek&t=146s
+https://stackoverflow.com/questions/22788384/what-is-the-difference-between-cer-pfx-file
+https://superuser.com/questions/580697/how-do-i-view-the-contents-of-a-pfx-file-on-windows
+https://security.stackexchange.com/questions/29425/difference-between-pfx-and-cert-certificates
+https://phoenixnap.com/kb/openssl-tutorial-ssl-certificates-private-keys-csrs
 ===============================================
 
 https://azurecto.com/azure-keyvault-authenticating-with-certificates-and-reading-secrets/
 https://www.rahulpnath.com/blog/authenticating-a-client-application-with-azure-key-vault/
 https://www.youtube.com/watch?v=51Qmk3TQJ44
 https://www.youtube.com/watch?v=JbshGF4ZwGE
+
