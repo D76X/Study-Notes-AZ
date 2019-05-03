@@ -79,4 +79,15 @@ When you ste the App.Config now you replace the original connection string with 
 1. ClientID
 2. ClientSecret
 3. The name of teh key to read from teh keyvault and its URL
+
+Console App read from keyvault
+https://azurecto.com/azure-keyvault-authenticating-with-certificates-and-reading-secrets/
+https://stackoverflow.com/questions/47875589/cant-access-azure-key-vault-from-desktop-console-app
+https://stackoverflow.com/questions/51565401/keyvault-how-do-i-get-the-pfx-file-stored-in-keyvault-from-my-c-sharp-app
+
+==============================================================================================================================================================
+
+MSI
+https://app.pluralsight.com/player?course=microsoft-azure-data-securing&author=reza-salehi&name=83d87507-3bef-4754-a046-46980dbdfc55&clip=7&mode=live
+
 ==============================================================================================================================================================

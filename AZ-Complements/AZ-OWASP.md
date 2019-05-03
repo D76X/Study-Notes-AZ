@@ -22,7 +22,8 @@
 - [XSS Tutorial #1 - What is Cross Site Scripting?](https://www.youtube.com/watch?v=M_nIIcKTxGk)  
 - [How does CORS prevent XSS?](https://security.stackexchange.com/questions/108835/how-does-cors-prevent-xss)  
 - [Same origin Policy and CORS (Cross-origin resource sharing)](https://stackoverflow.com/questions/14681292/same-origin-policy-and-cors-cross-origin-resource-sharing)  
-- [Single Origine Policy (SOP)](https://en.wikipedia.org/wiki/Same-origin_policy) 
+- [Single Origine Policy (SOP)](https://en.wikipedia.org/wiki/Same-origin_policy)  
+- [What is the difference between XSS and CSRF from their execution perspective?](https://www.quora.com/What-is-the-difference-between-XSS-and-CSRF-from-their-execution-perspective)  
 
 
 ## Complementary Resources
