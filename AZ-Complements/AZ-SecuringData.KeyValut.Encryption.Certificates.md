@@ -8,13 +8,11 @@
 ## Realted Resources
 
 - [Protecting Encryption Keys with Azure Key Vault - Stephen Haunts](https://www.youtube.com/watch?v=WIgUmnwKdas)  
-
 - [Managing User Secrets](https://www.youtube.com/watch?v=KDgNJKZ0oiA)  
 
 ## Complementary Resources
 
 - [Understanding Hardware Security Modules (HSMs)](https://www.cryptomathic.com/news-events/blog/understanding-hardware-security-modules-hsms)  
-
 - [BREACH LEVEL INDEX](https://breachlevelindex.com/)
 
 ---
@@ -841,6 +839,15 @@ Set-AzureRmKeyVaultAccessPolicy -VaultName $vaultName -ResourceGroupName $resour
 Set-AzureRmKeyVaultAccessPolicy  -VaultName $vaultName  -ResourceGroupName $resourceGroupName `
 -ServicePrincipalName $applicationId -PermissionsToKeys get,wrapKey,unwrapKey,sign,verify,list
 ```
+
+---
+
+## Implementing SSL/TSL Communication 
+
+### Related Resources 
+
+- [How to get and install a free Let's Encrypt wildcard certificate on a Web App using SSLForFree](https://www.youtube.com/watch?v=AuMj31MEy5E)   
+- [What is the difference between a certificate and a key with respect to SSL?](https://superuser.com/questions/620121/what-is-the-difference-between-a-certificate-and-a-key-with-respect-to-ssl)  
 
 ---
 ---
