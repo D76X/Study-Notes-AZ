@@ -82,6 +82,13 @@ When you ste the App.Config now you replace the original connection string with 
 2. ClientSecret
 3. The name of teh key to read from teh keyvault and its URL
 
+What is difference between Keys and Secrets in Azure Key Vault?
+https://stackoverflow.com/questions/38277023/what-is-difference-between-keys-and-secrets-in-azure-key-vault
+About keys, secrets, and certificates
+https://docs.microsoft.com/en-us/azure/key-vault/about-keys-secrets-and-certificates?redirectedfrom=MSDN
+
+=============================================================================================================================
+
 ===============================================
 Introduction to Cryptographic Keys and Certificates
 https://www.youtube.com/watch?v=q9vu6_2r0o4
