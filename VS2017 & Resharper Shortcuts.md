@@ -268,8 +268,13 @@ In this case both **the index and the working area** are reset to the set of the
 | `git show HEAD` | The sama as above but the reference HEAD is used. This time the details about the branch commit pointed to by HEAD are shown.|
 | `git show HEAD^` | The caret `^` means the parent commit. In this case the details about the parent commit of the commit pointed to by HEAD is displayed|
 | `` | .|
-| `` | .|
-| `` | .|
+| `git stash save "my_changes"` | Stashes the staged changes that is those that are in the Index and names the stash "my_changes".|
+| `git stash list` | Lists the items in the stash.|
+| `git stash apply` | Applies the last stashed changes to the Working Area.|
+| `git stash apply stash@{11}` | Applies the changes in the stash 11.|
+| `git stash clear` | Clear the whole stash.|
+| `git stash drop` | Drops the top stash.|
+| `git stash drop stash@{5}` | Drops the top stash 5.|
 | `` | .|
 
 ---
